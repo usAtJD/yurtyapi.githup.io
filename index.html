@@ -3,49 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yurt Yapı Panel</title>
+    <title>Yurt Yapı | Dosya Paneli</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            padding: 0;
         }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        h1 {
-            color: #3498db;
-        }
-        p {
-            margin: 20px 0;
-        }
-        a {
-            display: inline-block;
+        .header {
             background-color: #3498db;
             color: white;
-            padding: 12px 20px;
+            padding: 20px;
+            text-align: center;
+        }
+        .card {
+            background-color: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .vcard-btn, .download-btn {
+            display: inline-block;
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 15px;
             border-radius: 5px;
             text-decoration: none;
+            margin-top: 10px;
         }
-        a:hover {
-            background-color: #2980b9;
+        .file-list {
+            margin-top: 20px;
+        }
+        .file-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .no-files {
+            color: #777;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Yurt Yapı Panel</h1>
-        <p>Dosya yönetim sistemi ve iletişim paneline aşağıdan ulaşabilirsiniz.</p>
-        <a href="http://localhost:5000">Giriş Paneline Git</a>
+
+    <div class="header">
+        <h1>YURT YAPI ALEMİNYUM SİSTEMLERİ</h1>
     </div>
+
+    <div class="card">
+        <h2>İletişim Bilgileri</h2>
+        <p><strong>Kurucu:</strong> İSMAİL YEŞİLYURT</p>
+        <p><strong>Telefon:</strong> <a href="tel:+905353133790">+90 535 313 3790</a></p>
+        <p><strong>E-posta:</strong> <a href="mailto:info@yurtyapialeminyum.com">info@yurtyapialeminyum.com</a></p>
+        <p><strong>Adres:</strong> İnönü mahallesi 361 sk no 48 BAĞCILAR / İSTANBUL</p>
+        <p><strong>Web Sitesi:</strong> <a href="https://yurtyapialuminyum.com/" target="_blank">yurtyapialuminyum.com</a></p>
+
+        <a class="vcard-btn" href="data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3AYURT%20YAPI%20ALEM%C4%B0NYUM%20S%C4%B0STEMLER%C4%B0%0ATEL%3A%2B905353133790%0AEMAIL%3Ainfo%40yurtyapialeminyum.com%0AURL%3Ahttps%3A%2F%2Fyurtyapialuminyum.com%2F%0AADR%3A%C4%B0n%C3%B6n%C3%BC%20mahallesi%20361%20sk%20no%2048%20BA%C4%9ECILAR%20%2F%20%C4%B0STANBUL%0ANOTE%3AKurucu%3A%20%C4%B0SMA%C4%B0L%20YE%C5%9E%C4%B0LYURT%0AEND%3AVCARD" download="yurt_yapi.vcf">
+            Rehbere Kaydet (.vcf)
+        </a>
+    </div>
+
+    <div class="card">
+        <h2>Dosya Yöneticisi (Demo)</h2>
+        <p class="no-files">Bu demo sürümde dosya yükleme ve indirme desteklenmez.</p>
+        <div class="file-list">
+            <div class="file-item">
+                <span>örnek_dosya.pdf</span>
+                <a class="download-btn" href="#">İndir</a>
+            </div>
+            <div class="file-item">
+                <span>katalog2025.jpg</span>
+                <a class="download-btn" href="#">İndir</a>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
-
