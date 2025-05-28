@@ -1,92 +1,132 @@
-from flask import Flask, request, redirect, url_for, session, render_template_string
-
-app = Flask(__name__)
-app.secret_key = 'yurtyapi25885'  # Güvenlik için bu anahtarı değiştir
-
-# Giriş ekranı HTML
-LOGIN_HTML = """
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Giriş Yap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yurt Yapı Alüminyum Sistemleri</title>
     <style>
         body {
-            background-color: #f4f6f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
         }
-        .login-box {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
             text-align: center;
-            width: 300px;
         }
-        button {
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .login-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 12px;
             background-color: #3498db;
             color: white;
-            padding: 12px;
-            border: none;
-            width: 100%;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
         }
-        button:hover {
+        .login-btn:hover {
             background-color: #2980b9;
+        }
+        .contact-info {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border-left: 5px solid #3498db;
+        }
+        .contact-info h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .file-upload {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .file-upload input {
+            margin: 10px 0;
+        }
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
-    <div class="login-box">
-        <h2>YURT YAPI</h2>
-        <form method="post">
-            <button type="submit">GİRİŞ YAP</button>
-        </form>
+    <header>
+        <h1>YURT YAPI ALÜMİNYUM SİSTEMLERİ</h1>
+    </header>
+
+    <div class="container">
+        <button id="loginBtn" class="login-btn">GİRİŞ</button>
+
+        <div id="contactSection" class="contact-info">
+            <h2>İletişim Bilgileri</h2>
+            <p><strong>Kurucu:</strong> İsmail Yeşilyurt</p>
+            <p><strong>Web Sitesi:</strong> <a href="https://yurtyapialuminyum.com/" target="_blank">yurtyapialuminyum.com</a></p>
+            <p><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48 D 3</p>
+            <p><strong>Email:</strong> info@yurtyapialuminyum.com</p>
+            <p><strong>Telefon:</strong> 0535 313 37 90</p>
+
+            <div class="file-upload">
+                <h3>Dosya Yükleme (Max 600MB)</h3>
+                <input type="file" id="fileUpload" name="fileUpload">
+                <p>Maksimum 600MB boyutunda dosya yükleyebilirsiniz.</p>
+            </div>
+        </div>
     </div>
+
+    <footer>
+        <p>&copy; 2023 Yurt Yapı Alüminyum Sistemleri. Tüm hakları saklıdır.</p>
+    </footer>
+
+    <script>
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const contactSection = document.getElementById('contactSection');
+            if (contactSection.style.display === 'block') {
+                contactSection.style.display = 'none';
+                this.textContent = 'GİRİŞ';
+            } else {
+                contactSection.style.display = 'block';
+                this.textContent = 'KAPAT';
+            }
+        });
+
+        // Dosya boyutu kontrolü
+        document.getElementById('fileUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const maxSize = 600 * 1024 * 1024; // 600MB
+            
+            if (file && file.size > maxSize) {
+                alert('Dosya boyutu 600MB\'dan büyük olamaz!');
+                this.value = ''; // Dosya seçimini temizle
+            }
+        });
+    </script>
 </body>
 </html>
-"""
-
-# Dashboard HTML
-DASHBOARD_HTML = """
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <title>Panel</title>
-</head>
-<body>
-    <h1>Hoş Geldiniz!</h1>
-    <p>Giriş başarılı.</p>
-    <a href="{{ url_for('logout') }}">Çıkış Yap</a>
-</body>
-</html>
-"""
-
-@app.route('/', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        session['logged_in'] = True
-        return redirect(url_for('dashboard'))
-    return render_template_string(LOGIN_HTML)
-
-@app.route('/dashboard')
-def dashboard():
-    if not session.get('logged_in'):
-        return redirect(url_for('login'))
-    return render_template_string(DASHBOARD_HTML)
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
-
-if __name__ == '__main__':
-    app.run(debug=True)
