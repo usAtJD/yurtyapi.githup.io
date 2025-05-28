@@ -74,7 +74,7 @@
             padding: 8px 0;
         }
         .file-upload {
-            margin-top: 20px;
+            margin-top: 40px;
             padding: 20px;
             border: 2px dashed #ccc;
             border-radius: 5px;
@@ -108,7 +108,7 @@
             background-color: #e74c3c;
             color: white;
         }
-        .add-all-contacts {
+        .add-contact {
             margin-top: 20px;
             padding: 10px;
             background-color: #3498db;
@@ -117,6 +117,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
+            width: 100%;
         }
         footer {
             background-color: #2c3e50;
@@ -124,6 +125,9 @@
             text-align: center;
             padding: 15px 0;
             margin-top: 30px;
+        }
+        .contact-section {
+            margin-bottom: 30px;
         }
     </style>
 </head>
@@ -138,23 +142,26 @@
         <div id="contactSection" class="contact-info">
             <button class="close-btn" onclick="closeContactSection()">×</button>
             <h2>İletişim Bilgileri</h2>
-            <div class="contact-item">
-                <p><strong>Kurucu:</strong> İsmail Yeşilyurt</p>
-            </div>
-            <div class="contact-item">
-                <p><strong>Web Sitesi:</strong> <a href="https://yurtyapialuminyum.com/" target="_blank">yurtyapialuminyum.com</a></p>
-            </div>
-            <div class="contact-item">
-                <p><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48 D 3</p>
-            </div>
-            <div class="contact-item">
-                <p><strong>Email:</strong> info@yurtyapialuminyum.com</p>
-            </div>
-            <div class="contact-item">
-                <p><strong>Telefon:</strong> 0535 313 37 90</p>
-            </div>
+            
+            <div class="contact-section">
+                <div class="contact-item">
+                    <p><strong>Kurucu:</strong> İsmail Yeşilyurt</p>
+                </div>
+                <div class="contact-item">
+                    <p><strong>Web Sitesi:</strong> <a href="https://yurtyapialuminyum.com/" target="_blank">yurtyapialuminyum.com</a></p>
+                </div>
+                <div class="contact-item">
+                    <p><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48 D 3</p>
+                </div>
+                <div class="contact-item">
+                    <p><strong>Email:</strong> info@yurtyapialuminyum.com</p>
+                </div>
+                <div class="contact-item">
+                    <p><strong>Telefon:</strong> 0535 313 37 90</p>
+                </div>
 
-            <button class="add-all-contacts" onclick="addAllToContacts()">Tümünü Rehbere Ekle</button>
+                <button class="add-contact" onclick="addToPhoneContacts()">Rehbere Ekle</button>
+            </div>
 
             <div class="file-upload">
                 <h3>Dosyalarım (Max 600MB)</h3>
@@ -274,23 +281,42 @@
             }
         }
 
-        // Tüm iletişim bilgilerini rehbere ekle
-        function addAllToContacts() {
-            const contactInfo = `
-                İsmail Yeşilyurt
-                Web: https://yurtyapialuminyum.com/
-                Adres: İnönü Mahallesi 361 Sk No 48 D 3
-                Email: info@yurtyapialuminyum.com
-                Telefon: 0535 313 37 90
-            `;
+        // Telefon rehberine ekleme fonksiyonu
+        function addToPhoneContacts() {
+            const contact = {
+                name: "İsmail Yeşilyurt (Yurt Yapı)",
+                tel: "05353133790",
+                email: "info@yurtyapialuminyum.com",
+                address: "İnönü Mahallesi 361 Sk No 48 D 3",
+                website: "https://yurtyapialuminyum.com/"
+            };
             
-            // Bu kısım gerçekte rehbere ekleme işlemi yapacak
-            alert('Tüm iletişim bilgileri rehbere eklendi:\n\n' + contactInfo);
+            // VCF dosyası oluştur
+            const vcfData = `
+BEGIN:VCARD
+VERSION:3.0
+FN:${contact.name}
+TEL;TYPE=WORK,VOICE:${contact.tel}
+EMAIL;TYPE=PREF,INTERNET:${contact.email}
+ADR;TYPE=WORK,PREF:;;${contact.address}
+URL:${contact.website}
+END:VCARD
+            `.trim();
             
-            // Kopyalama işlemi için
-            navigator.clipboard.writeText(contactInfo.trim())
-                .then(() => console.log('İletişim bilgileri kopyalandı'))
-                .catch(err => console.error('Kopyalama hatası:', err));
+            // VCF dosyasını indirme
+            const blob = new Blob([vcfData], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'yurt_yapi_iletisim.vcf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Kullanıcıyı bilgilendir
+            alert('Rehber dosyası indirildi. Telefonunuzun rehber uygulamasından bu dosyayı içe aktarabilirsiniz.');
         }
 
         // Dosya boyutunu formatlama
