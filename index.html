@@ -15,141 +15,119 @@
         header {
             background-color: #2c3e50;
             color: white;
-            padding: 15px 0;
+            padding: 12px 0;
             text-align: center;
-            border-bottom: 5px solid #3498db;
+            border-bottom: 4px solid #3498db;
         }
         h1 {
             margin: 0;
-            font-size: 1.8em;
+            font-size: 1.6em;
             font-weight: 600;
         }
         .container {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 30px;
+            max-width: 550px;
+            margin: 20px auto;
+            padding: 15px;
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
         }
         .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 150px;
+            height: 80px;
         }
         .login-btn {
             display: block;
-            width: 220px;
-            padding: 15px;
+            width: 180px;
+            padding: 10px;
             background-color: #3498db;
             color: white;
             text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
+            border-radius: 4px;
             font-weight: bold;
-            font-size: 1.1em;
-            transition: background-color 0.3s;
+            font-size: 0.95em;
             border: none;
             cursor: pointer;
         }
-        .login-btn:hover {
-            background-color: #2980b9;
-        }
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #7f8c8d;
-        }
-        .contact-info {
+        .content-sections {
             display: none;
-            margin-top: 20px;
+            margin-top: 10px;
+        }
+        .section {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-bottom: 15px;
         }
         .contact-section {
-            padding: 25px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            border-left: 5px solid #3498db;
-            margin-bottom: 30px;
+            border-left: 3px solid #3498db;
         }
         .files-section {
-            padding: 25px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            border-left: 5px solid #27ae60;
+            border-left: 3px solid #27ae60;
         }
         .section-title {
             color: #2c3e50;
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 1.5em;
+            margin: 0 0 12px 0;
+            font-size: 1.2em;
             text-align: center;
         }
         .contact-grid {
             display: grid;
-            grid-template-columns: 120px 1fr;
-            gap: 10px;
+            grid-template-columns: 90px 1fr;
+            gap: 6px;
             align-items: center;
+            font-size: 0.85em;
         }
         .contact-label {
             font-weight: bold;
             color: #2c3e50;
         }
         .file-upload {
-            margin-top: 20px;
-            padding: 20px;
-            border: 2px dashed #ccc;
-            border-radius: 5px;
+            margin-top: 10px;
+            padding: 12px;
+            border: 1px dashed #ccc;
+            border-radius: 4px;
             text-align: center;
             background-color: white;
-        }
-        .file-upload h3 {
-            font-size: 1.2em;
-            margin-top: 0;
-            margin-bottom: 15px;
+            font-size: 0.85em;
         }
         .file-upload input {
-            margin: 15px 0;
+            margin: 10px 0;
+            width: 100%;
         }
-        .file-upload button {
-            padding: 8px 20px;
+        .action-btn {
+            padding: 8px;
             background-color: #3498db;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.85em;
+            width: 100%;
+            margin-top: 10px;
         }
         .uploaded-files {
-            margin-top: 20px;
-        }
-        .uploaded-files h3 {
-            font-size: 1.2em;
-            margin-bottom: 15px;
+            margin-top: 12px;
+            font-size: 0.85em;
         }
         .file-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px;
+            padding: 8px 10px;
             border-bottom: 1px solid #eee;
-            margin: 8px 0;
+            margin: 5px 0;
             background-color: #fdfdfd;
-            border-radius: 4px;
         }
         .file-actions button {
-            margin-left: 10px;
-            padding: 6px 12px;
+            margin-left: 8px;
+            padding: 4px 8px;
             border: none;
-            border-radius: 3px;
+            border-radius: 2px;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 0.8em;
         }
         .download-btn {
             background-color: #27ae60;
@@ -159,28 +137,13 @@
             background-color: #e74c3c;
             color: white;
         }
-        .action-btn {
-            margin-top: 20px;
-            padding: 12px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            font-size: 1em;
-            transition: background-color 0.3s;
-        }
-        .action-btn:hover {
-            background-color: #2980b9;
-        }
         footer {
             background-color: #2c3e50;
             color: white;
             text-align: center;
-            padding: 25px 0;
-            margin-top: 50px;
+            padding: 15px 0;
+            margin-top: 30px;
+            font-size: 0.8em;
         }
     </style>
 </head>
@@ -194,10 +157,8 @@
             <button id="loginBtn" class="login-btn">GİRİŞ</button>
         </div>
 
-        <div id="contactSection" class="contact-info">
-            <button class="close-btn" onclick="closeContactSection()">×</button>
-            
-            <div class="contact-section">
+        <div id="contentSections" class="content-sections">
+            <div class="section contact-section">
                 <h2 class="section-title">İletişim Bilgileri</h2>
                 
                 <div class="contact-grid">
@@ -220,13 +181,13 @@
                 <button class="action-btn" onclick="addToPhoneContacts()">Rehbere Ekle</button>
             </div>
 
-            <div class="files-section">
+            <div class="section files-section">
                 <h2 class="section-title">Dosya Yönetimi</h2>
                 
                 <div class="file-upload">
                     <h3>Dosya Yükle</h3>
                     <input type="file" id="fileUpload" name="fileUpload">
-                    <button onclick="uploadFile()">Yükle</button>
+                    <button class="action-btn" onclick="uploadFile()">Yükle</button>
                     <p>Maksimum 600MB boyutunda dosya yükleyebilirsiniz.</p>
                 </div>
 
@@ -238,32 +199,22 @@
         </div>
     </div>
 
-    <footer></footer>
+    <footer>Yurt Yapı Alüminyum Sistemleri © 2023</footer>
 
     <script>
-        // Uygulama durumu
         const state = {
             uploadedFiles: []
         };
 
-        // Giriş butonu işlevi
         document.getElementById('loginBtn').addEventListener('click', function() {
-            const contactSection = document.getElementById('contactSection');
-            contactSection.style.display = 'block';
+            document.getElementById('contentSections').style.display = 'block';
             this.style.display = 'none';
         });
 
-        // İletişim bölümünü kapatma
-        function closeContactSection() {
-            document.getElementById('contactSection').style.display = 'none';
-            document.getElementById('loginBtn').style.display = 'block';
-        }
-
-        // Dosya boyutu kontrolü ve yükleme
         function uploadFile() {
             const fileInput = document.getElementById('fileUpload');
             const file = fileInput.files[0];
-            const maxSize = 600 * 1024 * 1024; // 600MB
+            const maxSize = 600 * 1024 * 1024;
             
             if (!file) {
                 alert('Lütfen bir dosya seçin!');
@@ -275,8 +226,7 @@
                 return;
             }
 
-            // Dosyayı state'e ekle
-            const fileId = Date.now(); // Benzersiz ID oluştur
+            const fileId = Date.now();
             state.uploadedFiles.push({
                 id: fileId,
                 name: file.name,
@@ -284,16 +234,11 @@
                 file: file
             });
 
-            // Dosya listesini güncelle
             renderFileList();
-            
-            // Input'u temizle
             fileInput.value = '';
-            
             alert('Dosya başarıyla yüklendi!');
         }
 
-        // Dosya listesini render et
         function renderFileList() {
             const fileList = document.getElementById('fileList');
             fileList.innerHTML = '';
@@ -319,7 +264,6 @@
             });
         }
 
-        // Dosya indirme
         function downloadFile(fileId) {
             const file = state.uploadedFiles.find(f => f.id === fileId);
             if (!file) return;
@@ -334,7 +278,6 @@
             URL.revokeObjectURL(url);
         }
 
-        // Dosya silme
         function deleteFile(fileId) {
             if (confirm('Bu dosyayı silmek istediğinize emin misiniz?')) {
                 state.uploadedFiles = state.uploadedFiles.filter(f => f.id !== fileId);
@@ -342,7 +285,6 @@
             }
         }
 
-        // Telefon rehberine ekleme fonksiyonu
         function addToPhoneContacts() {
             const contact = {
                 name: "İsmail Yeşilyurt (Yurt Yapı)",
@@ -352,7 +294,6 @@
                 website: "https://yurtyapialuminyum.com/"
             };
             
-            // VCF dosyası oluştur
             const vcfData = `
 BEGIN:VCARD
 VERSION:3.0
@@ -364,7 +305,6 @@ URL:${contact.website}
 END:VCARD
             `.trim();
             
-            // VCF dosyasını indirme
             const blob = new Blob([vcfData], { type: 'text/vcard' });
             const url = URL.createObjectURL(blob);
             
@@ -376,11 +316,9 @@ END:VCARD
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            // Kullanıcıyı bilgilendir
             alert('Rehber dosyası indirildi. Telefonunuzun rehber uygulamasından bu dosyayı içe aktarabilirsiniz.');
         }
 
-        // Dosya boyutunu formatlama
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -389,7 +327,6 @@ END:VCARD
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        // Sayfa yüklendiğinde dosya listesini boş olarak render et
         window.onload = renderFileList;
     </script>
 </body>
