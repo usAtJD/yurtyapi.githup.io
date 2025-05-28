@@ -1,18 +1,7 @@
-from flask import Flask, request, redirect, url_for, session, render_template_string, send_from_directory
+from jinja2 import Template
 import os
-from werkzeug.utils import secure_filename
-import urllib.parse
 
-app = Flask(__name__)
-app.secret_key = 'yurtyapi25885'  # In production, use a more secure random key
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['MAX_CONTENT_LENGTH'] = 600 * 1024 * 1024  # 600MB limit
-app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx', 'xls', 'xlsx'}
-
-# Create upload directory if it doesn't exist
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
-# Company information
+# Şirket bilgileri
 company_info = {
     "name": "YURT YAPI ALEMİNYUM SİSTEMLERİ",
     "phone": "+905353133790",
@@ -22,220 +11,67 @@ company_info = {
     "address": "İnönü mahallesi 361 sk no 48 BAĞCILAR / İSTANBUL"
 }
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+# vCard içeriği
+vcard = (
+    "BEGIN:VCARD\nVERSION:3.0\n"
+    f"N:{company_info['name']}\n"
+    f"TEL:{company_info['phone']}\n"
+    f"EMAIL:{company_info['email']}\n"
+    f"URL:{company_info['website']}\n"
+    f"ADR:{company_info['address']}\n"
+    f"NOTE:Kurucu: {company_info['founder']}\n"
+    "END:VCARD"
+)
+vcard_encoded = "data:text/vcard;charset=utf-8," + vcard.replace("\n", "%0D%0A")
 
-# Mobile login HTML
-MOBILE_LOGIN = '''
+# Mobil uyumlu statik HTML şablon
+STATIC_HTML = '''
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yurt Yapı Giriş</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
-        .container { display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .login-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); width: 90%; max-width: 400px; }
-        h2 { text-align: center; color: #333; }
-        button { width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
-        button:hover { background: #2980b9; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="login-card">
-            <h2>YURT YAPI</h2>
-            <form method="POST">
-                <button type="submit">GİRİŞ YAP</button>
-            </form>
-        </div>
-    </div>
-</body>
-</html>
-'''
-
-# Dashboard HTML
-MOBILE_DASHBOARD = '''
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{ company.name }}</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
-        .header { background: #3498db; color: white; padding: 15px; text-align: center; position: relative; }
-        .logout-btn { position: absolute; right: 10px; top: 15px; background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
-        .logout-btn:hover { background: #c0392b; }
-        .card { background: white; margin: 15px; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .info-item { margin-bottom: 10px; }
-        .vcard-btn { display: block; text-align: center; background: #2ecc71; color: white; padding: 10px; border-radius: 5px; text-decoration: none; margin-top: 15px; }
-        .vcard-btn:hover { background: #27ae60; }
-        .upload-form { margin-top: 20px; }
-        .file-list { margin-top: 15px; }
-        .file-item { padding: 12px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .file-actions { display: flex; gap: 8px; }
-        .btn { padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 14px; cursor: pointer; }
-        .download-btn { background: #3498db; color: white; }
-        .download-btn:hover { background: #2980b9; }
-        .delete-btn { background: #e74c3c; color: white; border: none; }
-        .delete-btn:hover { background: #c0392b; }
-        .no-files { text-align: center; color: #777; padding: 15px; }
-        .file-input { margin-bottom: 10px; width: 100%; }
-        .status-message { padding: 10px; margin: 10px 0; border-radius: 4px; text-align: center; }
-        .success { background: #d4edda; color: #155724; }
-        .error { background: #f8d7da; color: #721c24; }
+        * {box-sizing: border-box;}
+        body {font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f0f2f5;}
+        .header {background: #3498db; color: white; padding: 15px; text-align: center;}
+        .card {background: white; margin: 15px; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+        .info-item {margin-bottom: 10px;}
+        .vcard-btn {display: block; text-align: center; background: #2ecc71; color: white; padding: 10px; border-radius: 5px; text-decoration: none; margin-top: 15px;}
+        .no-files {text-align: center; color: #777; padding: 15px;}
     </style>
 </head>
 <body>
     <div class="header">
         <h2>{{ company.name }}</h2>
-        <form action="/logout" method="POST" style="display:inline;">
-            <button type="submit" class="logout-btn">Çıkış</button>
-        </form>
     </div>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="status-message {{ category }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
+    
     <div class="card">
         <h3>İletişim Bilgileri</h3>
         <div class="info-item"><strong>Tel:</strong> <a href="tel:{{ company.phone }}">{{ company.phone }}</a></div>
         <div class="info-item"><strong>E-posta:</strong> <a href="mailto:{{ company.email }}">{{ company.email }}</a></div>
         <div class="info-item"><strong>Adres:</strong> {{ company.address }}</div>
-        <a href="{{ vcard_link }}" download="yurt_yapi.vcf" class="vcard-btn">Rehbere Kaydet</a>
+        
+        <a href="{{ vcard_link }}" download="yurt_yapi.vcf" class="vcard-btn">
+            Rehbere Kaydet
+        </a>
     </div>
-
+    
     <div class="card">
         <h3>Dosya Yöneticisi</h3>
-        <form class="upload-form" method="POST" enctype="multipart/form-data" action="/upload">
-            <input type="file" name="file" required class="file-input">
-            <button type="submit" class="btn download-btn" style="width: 100%;">Dosya Yükle</button>
-        </form>
-
-        <div class="file-list">
-            {% for file in files %}
-            <div class="file-item">
-                <span>{{ file }}</span>
-                <div class="file-actions">
-                    <a href="/download/{{ file }}" class="btn download-btn">İndir</a>
-                    <form action="/delete/{{ file }}" method="POST" style="display:inline;">
-                        <button type="submit" class="btn delete-btn" onclick="return confirm('Dosyayı silmek istediğinize emin misiniz?');">Sil</button>
-                    </form>
-                </div>
-            </div>
-            {% else %}
-            <div class="no-files">Henüz dosya yok</div>
-            {% endfor %}
-        </div>
+        <div class="no-files">Dosya yükleme özelliği statik sitede desteklenmez. Lütfen yerel bir uygulamayı kullanın.</div>
     </div>
 </body>
 </html>
 '''
 
-@app.route('/', methods=['GET', 'POST'])
-def mobile_login():
-    if request.method == 'POST':
-        session['authenticated'] = True
-        return redirect(url_for('mobile_dashboard'))
-    return render_template_string(MOBILE_LOGIN)
+# HTML dosyasını oluştur
+def generate_static_html():
+    template = Template(STATIC_HTML)
+    html_content = template.render(company=company_info, vcard_link=vcard_encoded)
+    with open("index.html", "w", encoding="utf-8") as f:
+        f.write(html_content)
 
-@app.route('/dashboard')
-def mobile_dashboard():
-    if not session.get('authenticated'):
-        return redirect(url_for('mobile_login'))
-
-    files = os.listdir(app.config['UPLOAD_FOLDER'])
-
-    # vCard content
-    vcard = (
-        "BEGIN:VCARD\nVERSION:3.0\n"
-        f"N:{company_info['name']}\n"
-        f"TEL:{company_info['phone']}\n"
-        f"EMAIL:{company_info['email']}\n"
-        f"URL:{company_info['website']}\n"
-        f"ADR:{company_info['address']}\n"
-        f"NOTE:Kurucu: {company_info['founder']}\n"
-        "END:VCARD"
-    )
-    vcard_encoded = "data:text/vcard;charset=utf-8," + urllib.parse.quote(vcard)
-
-    return render_template_string(
-        MOBILE_DASHBOARD,
-        company=company_info,
-        files=files,
-        vcard_link=vcard_encoded
-    )
-
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if not session.get('authenticated'):
-        return redirect(url_for('mobile_login'))
-
-    if 'file' not in request.files:
-        flash('Dosya seçilmedi', 'error')
-        return redirect(url_for('mobile_dashboard'))
-
-    file = request.files['file']
-    if file.filename == '':
-        flash('Dosya seçilmedi', 'error')
-        return redirect(url_for('mobile_dashboard'))
-
-    if not allowed_file(file.filename):
-        flash('İzin verilmeyen dosya türü', 'error')
-        return redirect(url_for('mobile_dashboard'))
-
-    try:
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        flash('Dosya başarıyla yüklendi', 'success')
-    except Exception as e:
-        flash(f'Dosya yükleme hatası: {str(e)}', 'error')
-
-    return redirect(url_for('mobile_dashboard'))
-
-@app.route('/download/<filename>')
-def download_file(filename):
-    if not session.get('authenticated'):
-        return redirect(url_for('mobile_login'))
-
-    try:
-        return send_from_directory(
-            app.config['UPLOAD_FOLDER'],
-            filename,
-            as_attachment=True
-        )
-    except FileNotFoundError:
-        flash('Dosya bulunamadı', 'error')
-        return redirect(url_for('mobile_dashboard'))
-
-@app.route('/delete/<filename>', methods=['POST'])
-def delete_file(filename):
-    if not session.get('authenticated'):
-        return redirect(url_for('mobile_login'))
-
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    if os.path.exists(filepath):
-        try:
-            os.remove(filepath)
-            flash('Dosya başarıyla silindi', 'success')
-        except Exception as e:
-            flash(f'Dosya silme hatası: {str(e)}', 'error')
-    else:
-        flash('Dosya bulunamadı', 'error')
-
-    return redirect(url_for('mobile_dashboard'))
-
-@app.route('/logout', methods=['POST'])
-def logout():
-    session.pop('authenticated', None)
-    return redirect(url_for('mobile_login'))
-
-if __name__ == '__main__':
-    from flask import flash
-    app.run(host='0.0.0.0', port=5000, debug=True)
+if __name__ == "__main__":
+    generate_static_html()
+    print("index.html dosyası başarıyla oluşturuldu. GitHub repository'nize yükleyin!")
