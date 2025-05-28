@@ -1,125 +1,141 @@
+# File structure for GitHub-ready Flask app:
+#
+# yurt_yapi_panel/
+# ├── app.py
+# ├── requirements.txt
+# ├── uploads/                (auto-created)
+# └── templates/
+#     └── index.html
+
+# ===================== app.py =====================
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from werkzeug.utils import secure_filename
+import os
+import urllib.parse
+
+app = Flask(__name__)
+app.secret_key = 'yurtyapi25885'
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 600 * 1024 * 1024  # 600 MB
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+company_info = {
+    "name": "YURT YAPI ALEMİNYUM SİSTEMLERİ",
+    "phone": "+905353133790",
+    "email": "info@yurtyapialeminyum.com",
+    "founder": "İSMAİL YEŞİLYURT",
+    "website": "https://yurtyapialuminyum.com/",
+    "address": "İnönü mahallesi 361 sk no 48 BAĞCILAR / İSTANBUL"
+}
+
+@app.route('/')
+def index():
+    files = os.listdir(UPLOAD_FOLDER)
+
+    vcard = (
+        "BEGIN:VCARD\nVERSION:3.0\n"
+        f"N:{company_info['name']}\n"
+        f"TEL:{company_info['phone']}\n"
+        f"EMAIL:{company_info['email']}\n"
+        f"URL:{company_info['website']}\n"
+        f"ADR:{company_info['address']}\n"
+        f"NOTE:Kurucu: {company_info['founder']}\n"
+        "END:VCARD"
+    )
+    vcard_encoded = "data:text/vcard;charset=utf-8," + urllib.parse.quote(vcard)
+
+    return render_template('index.html', company=company_info, files=files, vcard_link=vcard_encoded)
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return redirect(url_for('index'))
+
+    file = request.files['file']
+    if file.filename == '':
+        return redirect(url_for('index'))
+
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(UPLOAD_FOLDER, filename))
+    return redirect(url_for('index'))
+
+@app.route('/download/<filename>')
+def download_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename, as_attachment=True)
+
+@app.route('/delete/<filename>', methods=['POST'])
+def delete_file(filename):
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    if os.path.exists(filepath):
+        os.remove(filepath)
+    return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+# ===================== templates/index.html =====================
+# Place this file in a folder named "templates"
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>YURT YAPI ALEMİNYUM SİSTEMLERİ</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f5f5;
-      color: #333;
-    }
-    header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 2rem;
-      text-align: center;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 2rem;
-    }
-    .card {
-      background: white;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    h2 {
-      color: #2c3e50;
-    }
-    a {
-      color: #3498db;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 10px 16px;
-      background-color: #3498db;
-      color: white;
-      border-radius: 5px;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .file-list {
-      margin-top: 1rem;
-    }
-    .file-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #ddd;
-    }
-    .no-files {
-      color: #888;
-      font-style: italic;
-    }
-    input[type="file"] {
-      margin-top: 1rem;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; background: #f0f2f5; }
+    header { background: #2c3e50; color: white; padding: 2rem; text-align: center; }
+    .container { max-width: 800px; margin: auto; padding: 2rem; }
+    .card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+    .btn { display: inline-block; margin-top: 1rem; padding: 10px 16px; background-color: #3498db; color: white; border-radius: 5px; text-decoration: none; cursor: pointer; }
+    .btn.delete { background-color: #e74c3c; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>YURT YAPI ALEMİNYUM SİSTEMLERİ</h1>
-    <p>İletişim ve Dosya Paylaşım Paneli</p>
+    <h1>{{ company.name }}</h1>
   </header>
-
   <div class="container">
     <div class="card">
       <h2>İletişim Bilgileri</h2>
-      <p><strong>Kurucu:</strong> İSMAİL YEŞİLYURT</p>
-      <p><strong>Telefon:</strong> <a href="tel:+905353133790">+90 535 313 3790</a></p>
-      <p><strong>E-posta:</strong> <a href="mailto:info@yurtyapialeminyum.com">info@yurtyapialeminyum.com</a></p>
-      <p><strong>Adres:</strong> İnönü mahallesi 361 sk no 48 BAĞCILAR / İSTANBUL</p>
-      <p><strong>Web Sitesi:</strong> <a href="https://yurtyapialuminyum.com/" target="_blank">yurtyapialuminyum.com</a></p>
-
-      <a class="btn" href="data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3AYURT%20YAPI%20ALEM%C4%B0NYUM%20S%C4%B0STEMLER%C4%B0%0ATEL%3A%2B905353133790%0AEMAIL%3Ainfo%40yurtyapialeminyum.com%0AURL%3Ahttps%3A%2F%2Fyurtyapialuminyum.com%2F%0AADR%3A%C4%B0n%C3%B6n%C3%BC%20mahallesi%20361%20sk%20no%2048%20BA%C4%9ECILAR%20%2F%20%C4%B0STANBUL%0ANOTE%3AKurucu%3A%20%C4%B0SMA%C4%B0L%20YE%C5%9E%C4%B0LYURT%0AEND%3AVCARD" download="yurt_yapi.vcf">
-        Rehbere Kaydet (.vcf)
-      </a>
+      <p><strong>Telefon:</strong> <a href="tel:{{ company.phone }}">{{ company.phone }}</a></p>
+      <p><strong>E-Posta:</strong> <a href="mailto:{{ company.email }}">{{ company.email }}</a></p>
+      <p><strong>Adres:</strong> {{ company.address }}</p>
+      <a href="{{ vcard_link }}" download="yurt_yapi.vcf" class="btn">Rehbere Ekle</a>
     </div>
 
     <div class="card">
-      <h2>Dosya Paneli</h2>
+      <h2>Dosya Yöneticisi</h2>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit" class="btn">Dosya Yükle</button>
+      </form>
 
-      <input type="file" id="fileUpload" />
-      <div class="file-list" id="fileList">
-        <p class="no-files">Henüz yüklenen dosya yok.</p>
-      </div>
+      <ul>
+        {% for file in files %}
+        <li>
+          <span>{{ file }}</span>
+          <span>
+            <a href="/download/{{ file }}" class="btn">İndir</a>
+            <form action="/delete/{{ file }}" method="POST" style="display:inline;">
+              <button type="submit" class="btn delete" onclick="return confirm('Dosyayı silmek istediğinizden emin misiniz?');">Sil</button>
+            </form>
+          </span>
+        </li>
+        {% else %}
+        <li>Henüz dosya yok.</li>
+        {% endfor %}
+      </ul>
     </div>
   </div>
-
-  <script>
-    const fileUpload = document.getElementById("fileUpload");
-    const fileList = document.getElementById("fileList");
-
-    fileUpload.addEventListener("change", () => {
-      const files = fileUpload.files;
-      if (files.length === 0) return;
-
-      fileList.innerHTML = "";
-
-      for (let i = 0; i < files.length; i++) {
-        const item = document.createElement("div");
-        item.className = "file-item";
-        item.innerHTML = `
-          <span>${files[i].name}</span>
-          <button class="btn" onclick="alert('Bu bir demo, dosya indirilemez.')">İndir</button>
-        `;
-        fileList.appendChild(item);
-      }
-    });
-  </script>
-
 </body>
 </html>
+
+# ===================== requirements.txt =====================
+# Flask uygulaması için gerekli kütüphaneler
+Flask
+Werkzeug
