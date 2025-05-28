@@ -29,6 +29,7 @@
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
         }
         .login-btn {
             display: block;
@@ -46,6 +47,16 @@
         .login-btn:hover {
             background-color: #2980b9;
         }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
         .contact-info {
             display: none;
             margin-top: 30px;
@@ -53,18 +64,14 @@
             background-color: #f9f9f9;
             border-radius: 5px;
             border-left: 5px solid #3498db;
+            position: relative;
         }
         .contact-info h2 {
             color: #2c3e50;
             margin-top: 0;
         }
         .contact-item {
-            cursor: pointer;
             padding: 8px 0;
-            transition: background-color 0.2s;
-        }
-        .contact-item:hover {
-            background-color: #eee;
         }
         .file-upload {
             margin-top: 20px;
@@ -101,19 +108,22 @@
             background-color: #e74c3c;
             color: white;
         }
+        .add-all-contacts {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
         footer {
             background-color: #2c3e50;
             color: white;
             text-align: center;
             padding: 15px 0;
             margin-top: 30px;
-        }
-        .add-to-contacts {
-            display: none;
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #e1f5fe;
-            border-radius: 5px;
         }
     </style>
 </head>
@@ -126,30 +136,28 @@
         <button id="loginBtn" class="login-btn">GİRİŞ</button>
 
         <div id="contactSection" class="contact-info">
+            <button class="close-btn" onclick="closeContactSection()">×</button>
             <h2>İletişim Bilgileri</h2>
-            <div class="contact-item" onclick="showAddToContacts('İsmail Yeşilyurt')">
+            <div class="contact-item">
                 <p><strong>Kurucu:</strong> İsmail Yeşilyurt</p>
             </div>
-            <div class="contact-item" onclick="showAddToContacts('yurtyapialuminyum.com')">
+            <div class="contact-item">
                 <p><strong>Web Sitesi:</strong> <a href="https://yurtyapialuminyum.com/" target="_blank">yurtyapialuminyum.com</a></p>
             </div>
-            <div class="contact-item" onclick="showAddToContacts('İnönü Mahallesi 361 Sk No 48 D 3')">
+            <div class="contact-item">
                 <p><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48 D 3</p>
             </div>
-            <div class="contact-item" onclick="showAddToContacts('info@yurtyapialuminyum.com')">
+            <div class="contact-item">
                 <p><strong>Email:</strong> info@yurtyapialuminyum.com</p>
             </div>
-            <div class="contact-item" onclick="showAddToContacts('05353133790')">
+            <div class="contact-item">
                 <p><strong>Telefon:</strong> 0535 313 37 90</p>
             </div>
 
-            <div id="addToContacts" class="add-to-contacts">
-                <p id="contactText"></p>
-                <button onclick="addToContacts()">Rehbere Ekle</button>
-            </div>
+            <button class="add-all-contacts" onclick="addAllToContacts()">Tümünü Rehbere Ekle</button>
 
             <div class="file-upload">
-                <h3>Dosya Yükleme (Max 600MB)</h3>
+                <h3>Dosyalarım (Max 600MB)</h3>
                 <input type="file" id="fileUpload" name="fileUpload">
                 <button onclick="uploadFile()">Yükle</button>
                 <p>Maksimum 600MB boyutunda dosya yükleyebilirsiniz.</p>
@@ -162,9 +170,7 @@
         </div>
     </div>
 
-    <footer>
-        <!-- Alt yazı kaldırıldı -->
-    </footer>
+    <footer></footer>
 
     <script>
         // Uygulama durumu
@@ -175,14 +181,15 @@
         // Giriş butonu işlevi
         document.getElementById('loginBtn').addEventListener('click', function() {
             const contactSection = document.getElementById('contactSection');
-            if (contactSection.style.display === 'block') {
-                contactSection.style.display = 'none';
-                this.textContent = 'GİRİŞ';
-            } else {
-                contactSection.style.display = 'block';
-                this.textContent = 'KAPAT';
-            }
+            contactSection.style.display = 'block';
+            this.style.display = 'none';
         });
+
+        // İletişim bölümünü kapatma
+        function closeContactSection() {
+            document.getElementById('contactSection').style.display = 'none';
+            document.getElementById('loginBtn').style.display = 'block';
+        }
 
         // Dosya boyutu kontrolü ve yükleme
         function uploadFile() {
@@ -267,6 +274,25 @@
             }
         }
 
+        // Tüm iletişim bilgilerini rehbere ekle
+        function addAllToContacts() {
+            const contactInfo = `
+                İsmail Yeşilyurt
+                Web: https://yurtyapialuminyum.com/
+                Adres: İnönü Mahallesi 361 Sk No 48 D 3
+                Email: info@yurtyapialuminyum.com
+                Telefon: 0535 313 37 90
+            `;
+            
+            // Bu kısım gerçekte rehbere ekleme işlemi yapacak
+            alert('Tüm iletişim bilgileri rehbere eklendi:\n\n' + contactInfo);
+            
+            // Kopyalama işlemi için
+            navigator.clipboard.writeText(contactInfo.trim())
+                .then(() => console.log('İletişim bilgileri kopyalandı'))
+                .catch(err => console.error('Kopyalama hatası:', err));
+        }
+
         // Dosya boyutunu formatlama
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
@@ -274,21 +300,6 @@
             const sizes = ['Bytes', 'KB', 'MB', 'GB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-
-        // Rehbere ekleme işlevleri
-        let currentContact = '';
-        
-        function showAddToContacts(contact) {
-            currentContact = contact;
-            const addToContacts = document.getElementById('addToContacts');
-            document.getElementById('contactText').textContent = contact + ' rehbere eklensin mi?';
-            addToContacts.style.display = 'block';
-        }
-        
-        function addToContacts() {
-            alert(currentContact + ' rehbere eklendi!');
-            document.getElementById('addToContacts').style.display = 'none';
         }
 
         // Sayfa yüklendiğinde dosya listesini boş olarak render et
