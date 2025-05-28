@@ -1,11 +1,10 @@
 from flask import Flask, request, redirect, url_for, session, render_template_string
-import os
 
 app = Flask(__name__)
-app.secret_key = 'yurtyapi25885'
+app.secret_key = 'yurtyapi25885'  # Güvenlik için bu anahtarı değiştir
 
-# Giriş ekranı şablonu
-MOBILE_LOGIN = """
+# Giriş ekranı HTML
+LOGIN_HTML = """
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -13,33 +12,29 @@ MOBILE_LOGIN = """
     <title>Giriş Yap</title>
     <style>
         body {
-            background-color: #f5f6fa;
-            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            font-family: Arial, sans-serif;
         }
-        .login-container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 400px;
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
             text-align: center;
-        }
-        h2 {
-            margin-bottom: 30px;
+            width: 300px;
         }
         button {
             background-color: #3498db;
             color: white;
-            padding: 15px;
-            width: 100%;
+            padding: 12px;
             border: none;
-            border-radius: 8px;
+            width: 100%;
+            border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
         }
@@ -49,7 +44,7 @@ MOBILE_LOGIN = """
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="login-box">
         <h2>YURT YAPI</h2>
         <form method="post">
             <button type="submit">GİRİŞ YAP</button>
@@ -59,40 +54,39 @@ MOBILE_LOGIN = """
 </html>
 """
 
-# Kontrol paneli (dashboard)
-MOBILE_DASHBOARD = """
+# Dashboard HTML
+DASHBOARD_HTML = """
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Kontrol Paneli</title>
+    <title>Panel</title>
 </head>
 <body>
-    <h2>Hoş Geldiniz!</h2>
-    <p>Yurt Yapı Sistemine giriş yaptınız.</p>
-    <a href="{{ url_for('mobile_logout') }}">Çıkış Yap</a>
+    <h1>Hoş Geldiniz!</h1>
+    <p>Giriş başarılı.</p>
+    <a href="{{ url_for('logout') }}">Çıkış Yap</a>
 </body>
 </html>
 """
 
 @app.route('/', methods=['GET', 'POST'])
-def mobile_login():
+def login():
     if request.method == 'POST':
-        # Herhangi bir şifre kontrolü yapılmadan doğrudan giriş sağlanır
-        session['authenticated'] = True
-        return redirect(url_for('mobile_dashboard'))
-    return render_template_string(MOBILE_LOGIN)
+        session['logged_in'] = True
+        return redirect(url_for('dashboard'))
+    return render_template_string(LOGIN_HTML)
 
 @app.route('/dashboard')
-def mobile_dashboard():
-    if not session.get('authenticated'):
-        return redirect(url_for('mobile_login'))
-    return render_template_string(MOBILE_DASHBOARD)
+def dashboard():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    return render_template_string(DASHBOARD_HTML)
 
 @app.route('/logout')
-def mobile_logout():
+def logout():
     session.clear()
-    return redirect(url_for('mobile_login'))
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)
