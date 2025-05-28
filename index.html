@@ -31,17 +31,6 @@
             border-radius: 6px;
             box-shadow: 0 0 8px rgba(0,0,0,0.1);
         }
-        .contact-info {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border-left: 3px solid #3498db;
-            font-size: 0.85em;
-        }
-        .contact-info div {
-            margin: 5px 0;
-        }
         .login-container {
             display: flex;
             justify-content: center;
@@ -71,6 +60,9 @@
             border-radius: 5px;
             margin-bottom: 15px;
         }
+        .contact-info {
+            border-left: 3px solid #3498db;
+        }
         .files-section {
             border-left: 3px solid #27ae60;
         }
@@ -79,6 +71,13 @@
             margin: 0 0 12px 0;
             font-size: 1.2em;
             text-align: center;
+            font-weight: bold;
+        }
+        .contact-details {
+            font-size: 0.85em;
+        }
+        .contact-details div {
+            margin: 5px 0;
         }
         .file-upload {
             margin-top: 10px;
@@ -153,18 +152,21 @@
     </header>
 
     <div class="container">
-        <div class="contact-info">
-            <div><strong>Kurucu:</strong> İsmail Yeşilyurt</div>
-            <div><strong>Tel:</strong> 0535 313 37 90</div>
-            <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
-            <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
-        </div>
-
         <div class="login-container">
             <button id="loginBtn" class="login-btn">GİRİŞ</button>
         </div>
 
         <div id="contentSections" class="content-sections">
+            <div class="section contact-info">
+                <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
+                <div class="contact-details">
+                    <div><strong>Kurucu:</strong> İsmail Yeşilyurt</div>
+                    <div><strong>Tel:</strong> 0535 313 37 90</div>
+                    <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
+                    <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
+                </div>
+            </div>
+
             <div class="section files-section">
                 <h2 class="section-title">Dosya Yönetimi</h2>
                 
