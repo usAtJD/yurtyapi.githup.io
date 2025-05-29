@@ -37,19 +37,16 @@
       text-align: center;
     }
 
-    .login-box {
+    .login-title-box {
       background-color: white;
-      padding: 25px 30px;
+      padding: 15px 25px;
+      margin-bottom: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      text-align: center;
-    }
-
-    .login-title {
       font-size: 1.8em;
       font-weight: bold;
-      margin-bottom: 15px;
       color: #2c3e50;
+      border: 1px solid #ccc; /* kutucuk için eklendi */
     }
 
     .login-btn {
@@ -79,22 +76,30 @@
       font-weight: bold;
       text-align: center;
       color: #2c3e50;
-      position: relative;
+      display: inline-block; /* kutucuk için eklendi */
+      border: 1px solid #ccc; /* kutucuk için eklendi */
+      padding-left: 25px;
+      padding-right: 25px;
     }
 
     .logout-btn {
       position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 0.8em;
-      padding: 5px 10px;
-      background-color: #c0392b;
-      color: white;
+      top: 20px;
+      right: 20px;
+      font-size: 1em; /* küçültüldü */
+      padding: 0;
+      background: none;
+      color: #2c3e50;
       border: none;
-      border-radius: 4px;
       cursor: pointer;
+      line-height: 1;
+      width: 20px;
+      height: 20px;
+      font-weight: bold;
+      user-select: none;
     }
 
+    /* Diğer CSS'ler aynı kaldı */
     .section {
       padding: 20px;
       border-radius: 8px;
@@ -213,20 +218,17 @@
 </head>
 <body>
 
+  <button class="logout-btn" onclick="logout()" style="display:none;" id="logoutBtn">X</button>
+
   <!-- Giriş Sayfası -->
   <div id="loginPage" class="login-container">
-    <div class="login-box">
-      <div class="login-title">Yurt Yapı</div>
-      <button id="loginBtn" class="login-btn">GİRİŞ</button>
-    </div>
+    <div class="login-title-box">Yurt Yapı</div>
+    <button id="loginBtn" class="login-btn">GİRİŞ</button>
   </div>
 
   <!-- Ana İçerik -->
   <div id="mainContent" class="container" style="display:none;">
-    <div class="main-title-box">
-      Yurt Yapı Alüminyum Sistemleri
-      <button class="logout-btn" onclick="logout()" id="logoutBtn">X</button>
-    </div>
+    <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
 
     <div class="section contact-info">
       <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
@@ -260,11 +262,13 @@
     document.getElementById('loginBtn').addEventListener('click', function () {
       document.getElementById('loginPage').style.display = 'none';
       document.getElementById('mainContent').style.display = 'block';
+      document.getElementById('logoutBtn').style.display = 'inline-block';
     });
 
     function logout() {
       document.getElementById('mainContent').style.display = 'none';
       document.getElementById('loginPage').style.display = 'flex';
+      document.getElementById('logoutBtn').style.display = 'none';
     }
 
     function uploadFile() {
