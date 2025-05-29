@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Yurt Yapı Giriş</title>
+  <title>Yurt Yapı Alüminyum Sistemleri</title>
   <style>
     * {
       box-sizing: border-box;
@@ -13,9 +13,8 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f6f7;
+      background-color: #ecf0f1;
       color: #2c3e50;
-      height: 100vh;
     }
 
     .container {
@@ -28,17 +27,33 @@
       position: relative;
     }
 
-    .login-container {
+    .logout-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 28px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .login-screen {
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      height: 100vh;
-      text-align: center;
     }
 
-    .login-header {
-      font-size: 2em;
+    .login-title {
+      font-size: 1.5em;
       margin-bottom: 20px;
       color: #2c3e50;
     }
@@ -46,10 +61,10 @@
     .login-btn {
       background-color: #2980b9;
       color: white;
-      padding: 14px 30px;
+      padding: 12px 25px;
       border: none;
       border-radius: 6px;
-      font-size: 1.1em;
+      font-size: 1em;
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -174,40 +189,25 @@
       cursor: pointer;
     }
 
-    .logout-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 0.8em;
-      padding: 5px 10px;
-      background-color: #c0392b;
-      color: white;
+    hr {
       border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    footer {
       border-top: 1px solid #ccc;
-      margin-top: 40px;
-      padding: 20px 0;
+      margin: 40px 0;
     }
   </style>
 </head>
 <body>
-
-  <button class="logout-btn" onclick="logout()" style="display:none;" id="logoutBtn">ÇIKIŞ</button>
-
-  <div id="loginPage" class="login-container">
-    <div class="login-header">Yurt Yapı</div>
-    <button id="loginBtn" class="login-btn">GİRİŞ</button>
+  <div class="login-screen" id="loginScreen">
+    <div class="login-title">Yurt Yapı</div>
+    <button class="login-btn" onclick="showContent()">GİRİŞ</button>
   </div>
 
-  <div id="mainContent" class="container" style="display:none;">
-    <div id="contentSections" class="content-sections" style="display:block;">
+  <div class="container" id="mainContent" style="display: none;">
+    <button class="logout-btn" onclick="logout()">X</button>
 
+    <div class="content-sections">
       <div class="section contact-info">
-        <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
+        <h2 class="section-title">Yurt Yapı Alüminyum Sistemleri</h2>
         <div class="contact-details">
           <div><strong>Kurucu:</strong> İsmail Yeşilyurt</div>
           <div><strong>Tel:</strong> 0535 313 37 90</div>
@@ -218,11 +218,13 @@
       </div>
 
       <div class="section files-section">
-        <h2 class="section-title">Dosya Yönetimi</h2>
+        <h2 class="section-title">Yurt Yapı Alüminyum Sistemleri</h2>
+
         <div class="file-upload">
           <h3>Dosya Yükle</h3>
           <input type="file" id="fileUpload" name="fileUpload">
           <button class="action-btn" onclick="uploadFile()">Yükle</button>
+          <hr>
         </div>
 
         <div class="uploaded-files">
@@ -230,49 +232,137 @@
           <div id="fileList"></div>
         </div>
       </div>
-
     </div>
   </div>
 
-  <footer></footer>
-
   <script>
-    document.getElementById('loginBtn').addEventListener('click', function () {
-      document.getElementById('loginPage').style.display = 'none';
+    const state = {
+      uploadedFiles: []
+    };
+
+    function showContent() {
+      document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('mainContent').style.display = 'block';
-      document.getElementById('logoutBtn').style.display = 'inline-block';
-    });
+    }
 
     function logout() {
       document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('loginPage').style.display = 'flex';
-      document.getElementById('logoutBtn').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'flex';
     }
 
     function uploadFile() {
       const fileInput = document.getElementById('fileUpload');
       const file = fileInput.files[0];
+      const maxSize = 600 * 1024 * 1024;
+
+      if (!file) {
+        alert('Lütfen bir dosya seçin!');
+        return;
+      }
+
+      if (file.size > maxSize) {
+        alert('Dosya boyutu 600MB\'dan büyük olamaz!');
+        return;
+      }
+
+      const fileId = Date.now();
+      state.uploadedFiles.push({
+        id: fileId,
+        name: file.name,
+        size: formatFileSize(file.size),
+        file: file
+      });
+
+      renderFileList();
+      fileInput.value = '';
+      alert('Dosya başarıyla yüklendi!');
+    }
+
+    function renderFileList() {
+      const fileList = document.getElementById('fileList');
+      fileList.innerHTML = '';
+
+      if (state.uploadedFiles.length === 0) {
+        fileList.innerHTML = '<p>Henüz dosya yüklenmedi.</p>';
+        return;
+      }
+
+      state.uploadedFiles.forEach(file => {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+        fileItem.innerHTML = `
+          <div>
+            <strong>${file.name}</strong> (${file.size})
+          </div>
+          <div class="file-actions">
+            <button class="download-btn" onclick="downloadFile(${file.id})">İNDİR</button>
+            <button class="delete-btn" onclick="deleteFile(${file.id})">SİL</button>
+          </div>
+        `;
+        fileList.appendChild(fileItem);
+      });
+    }
+
+    function downloadFile(fileId) {
+      const file = state.uploadedFiles.find(f => f.id === fileId);
       if (!file) return;
 
-      const fileList = document.getElementById('fileList');
+      const url = URL.createObjectURL(file.file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = file.name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
 
-      const fileItem = document.createElement('div');
-      fileItem.className = 'file-item';
-      fileItem.innerHTML = `
-        <span>${file.name}</span>
-        <div class="file-actions">
-          <button class="download-btn">İndir</button>
-          <button class="delete-btn" onclick="this.closest('.file-item').remove()">Sil</button>
-        </div>
-      `;
+    function deleteFile(fileId) {
+      if (confirm('Bu dosyayı silmek istediğinize emin misiniz?')) {
+        state.uploadedFiles = state.uploadedFiles.filter(f => f.id !== fileId);
+        renderFileList();
+      }
+    }
 
-      fileList.appendChild(fileItem);
-      fileInput.value = '';
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
     function addToContacts() {
-      alert("İletişim bilgileri rehbere eklendi (simülasyon).");
+      const name = "İsmail Yeşilyurt";
+      const phone = "05353133790";
+      const email = "info@yurtyapialuminyum.com";
+      const address = "İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL";
+      const company = "Yurt Yapı Alüminyum Sistemleri";
+
+      const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:${name}
+ORG:${company}
+TEL;TYPE=CELL:${phone}
+EMAIL:${email}
+ADR:;;${address}
+NOTE:${company}
+END:VCARD`;
+
+      const blob = new Blob([vCard], { type: 'text/vcard' });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'ismail_yesilyurt.vcf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      alert('İsmail Yeşilyurt kişisi rehberinize eklendi!');
     }
+
+    window.onload = renderFileList;
   </script>
 </body>
 </html>
