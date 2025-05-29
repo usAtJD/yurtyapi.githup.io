@@ -38,43 +38,38 @@
       gap: 20px;
     }
 
-    .login-box, .login-title-box {
+    .login-title-box {
       background-color: white;
       padding: 15px 25px;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
       min-width: 250px;
       user-select: none;
-    }
-
-    .login-title-box {
       font-size: 2em;
       font-weight: bold;
       color: #2c3e50;
     }
 
     .login-box {
-      display: flex;
-      justify-content: center;
-    }
-
-    .login-btn {
-      background-color: #2980b9;
-      color: white;
-      padding: 14px 30px;
-      border: none;
-      border-radius: 6px;
-      font-size: 1.1em;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: background 0.3s ease;
-      width: 100%;
+      /* Buton kutusu kaldırıldı, sadece metin olacak */
       user-select: none;
     }
 
+    .login-btn {
+      background: none;
+      border: none;
+      color: #2980b9;
+      font-size: 1.3em;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      padding: 0;
+      transition: color 0.3s ease;
+    }
+
     .login-btn:hover {
-      background-color: #2471a3;
+      color: #2471a3;
+      text-decoration: underline;
     }
 
     .main-title-box {
@@ -93,20 +88,20 @@
     }
 
     .logout-btn {
-      position: absolute;
-      top: 20px;
-      right: 140px; /* Yurt yapı alüminyum sistemlerinin yanına */
-      font-size: 0.8em;
-      padding: 3px 7px;
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      font-size: 1.2em;
+      padding: 5px 10px;
       background-color: transparent;
       color: #2c3e50;
       border: none;
-      border-radius: 0;
       cursor: pointer;
       user-select: none;
-      line-height: 1;
       font-weight: bold;
       transition: color 0.3s ease;
+      z-index: 1000;
+      line-height: 1;
     }
     .logout-btn:hover {
       color: #e74c3c;
@@ -251,9 +246,9 @@
 
   <!-- Ana İçerik -->
   <div id="mainContent" class="container" style="display:none;">
+    <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:inline-block;">X</button>
     <div class="header-container">
       <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
-      <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:inline-block;">X</button>
     </div>
 
     <div class="section contact-info">
