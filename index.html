@@ -37,19 +37,22 @@
       text-align: center;
     }
 
-    /* Girişte Yurt Yapı ve Giriş butonu aynı kutuda */
     .login-box {
       background-color: white;
-      padding: 25px 40px;
+      padding: 15px 25px;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      min-width: 250px;
+    }
+
+    .login-title {
       font-size: 2em;
       font-weight: bold;
       color: #2c3e50;
-      display: inline-flex;
-      align-items: center;
-      gap: 25px;
-      min-width: 260px;
       user-select: none;
     }
 
@@ -64,54 +67,54 @@
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       transition: background 0.3s ease;
-      margin: 0;
-      min-width: 120px;
+      width: 100%;
     }
 
     .login-btn:hover {
       background-color: #2471a3;
     }
 
-    /* Ana içerikte yurt yapı ve çıkış yan yana */
-    .main-title-wrapper {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 30px;
-    }
-
-    /* "Yurt Yapı Alüminyum Sistemleri" yazısı küçültüldü */
     .main-title-box {
       background-color: white;
-      padding: 15px 25px;
+      padding: 10px 20px;
+      margin-bottom: 30px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      font-size: 1.4em;
+      font-size: 1.3em;
       font-weight: bold;
+      text-align: center;
       color: #2c3e50;
       display: inline-block;
-      min-width: 280px;
-      user-select: none;
+      vertical-align: middle;
     }
 
     .logout-btn {
+      position: absolute;
+      top: 20px;
+      right: 140px; /* Yurt yapı aleminyum sistemlerinin yanına */
       font-size: 0.8em;
-      padding: 4px 10px;
+      padding: 3px 7px;
       background-color: transparent;
       color: #2c3e50;
       border: none;
-      border-radius: 2px;
+      border-radius: 0;
       cursor: pointer;
-      font-weight: bold;
       user-select: none;
-      transition: color 0.3s ease;
       line-height: 1;
-      box-shadow: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+    .logout-btn:hover {
+      color: #e74c3c;
     }
 
-    .logout-btn:hover {
-      color: #2980b9;
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      position: relative;
     }
 
     .section {
@@ -165,7 +168,7 @@
       background-color: #2980b9;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 5px;
       font-size: 0.95em;
       cursor: pointer;
     }
@@ -217,7 +220,7 @@
       background-color: #3498db;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 5px;
       font-size: 0.95em;
       font-weight: bold;
       cursor: pointer;
@@ -235,16 +238,16 @@
   <!-- Giriş Sayfası -->
   <div id="loginPage" class="login-container">
     <div class="login-box">
-      <div>Yurt Yapı</div>
+      <div class="login-title">Yurt Yapı</div>
       <button id="loginBtn" class="login-btn">GİRİŞ</button>
     </div>
   </div>
 
   <!-- Ana İçerik -->
   <div id="mainContent" class="container" style="display:none;">
-    <div class="main-title-wrapper">
+    <div class="header-container">
       <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
-      <button class="logout-btn" onclick="logout()" id="logoutBtn">X</button>
+      <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:inline-block;">X</button>
     </div>
 
     <div class="section contact-info">
@@ -279,11 +282,13 @@
     document.getElementById('loginBtn').addEventListener('click', function () {
       document.getElementById('loginPage').style.display = 'none';
       document.getElementById('mainContent').style.display = 'block';
+      document.getElementById('logoutBtn').style.display = 'inline-block';
     });
 
     function logout() {
       document.getElementById('mainContent').style.display = 'none';
       document.getElementById('loginPage').style.display = 'flex';
+      document.getElementById('logoutBtn').style.display = 'none';
     }
 
     function uploadFile() {
@@ -308,15 +313,17 @@
     }
 
     function addToContacts() {
-      const vCardData = `BEGIN:VCARD
+      // VCF format oluştur ve indirme işlemi başlat
+      const vcfData = `BEGIN:VCARD
 VERSION:3.0
 FN:Yurt Yapı Alüminyum Sistemleri
+ORG:Yurt Yapı Alüminyum Sistemleri
 TEL;TYPE=CELL:05353133790
 EMAIL:info@yurtyapialuminyum.com
 ADR;TYPE=WORK:;;İnönü Mahallesi 361 Sk No 48;BAĞCILAR;İSTANBUL;;
 END:VCARD`;
 
-      const blob = new Blob([vCardData], { type: 'text/vcard' });
+      const blob = new Blob([vcfData], {type: 'text/vcard'});
       const url = URL.createObjectURL(blob);
 
       const a = document.createElement('a');
@@ -325,7 +332,6 @@ END:VCARD`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-
       URL.revokeObjectURL(url);
     }
   </script>
