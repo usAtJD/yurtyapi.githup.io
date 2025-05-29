@@ -281,52 +281,139 @@
   <footer></footer>
 
   <script>
+    // IndexedDB ayarları
+    const DB_NAME = 'yurtYapiFilesDB';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'files';
+
+    let db;
+    const openRequest = indexedDB.open(DB_NAME, DB_VERSION);
+
+    openRequest.onupgradeneeded = () => {
+      db = openRequest.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+      }
+    };
+
+    openRequest.onsuccess = () => {
+      db = openRequest.result;
+      loadFilesFromDB();
+    };
+
+    openRequest.onerror = () => {
+      console.error('IndexedDB açılırken hata:', openRequest.error);
+    };
+
+    // DB'den dosyaları yükle
+    function loadFilesFromDB() {
+      const tx = db.transaction(STORE_NAME, 'readonly');
+      const store = tx.objectStore(STORE_NAME);
+      const getAllRequest = store.getAll();
+
+      getAllRequest.onsuccess = () => {
+        const files = getAllRequest.result;
+        const fileList = document.getElementById('fileList');
+        fileList.innerHTML = '';
+        files.forEach(fileObj => {
+          addFileItem(fileObj);
+        });
+      };
+    }
+
+    // Dosyayı DB'ye kaydet
+    function saveFileToDB(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataURL = e.target.result;
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        store.add({
+          name: file.name,
+          dataURL: dataURL,
+          type: file.type,
+          size: file.size,
+          lastModified: file.lastModified
+        });
+
+        tx.oncomplete = () => {
+          loadFilesFromDB();
+        };
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // HTML'de dosya öğesi oluşturma
+    function addFileItem(fileObj) {
+      const fileList = document.getElementById('fileList');
+
+      const fileItem = document.createElement('div');
+      fileItem.className = 'file-item';
+
+      fileItem.innerHTML = `
+        <span>${fileObj.name}</span>
+        <div class="file-actions">
+          <button class="download-btn">İndir</button>
+          <button class="delete-btn">Sil</button>
+        </div>
+      `;
+
+      // İndir butonu
+      const downloadBtn = fileItem.querySelector('.download-btn');
+      downloadBtn.onclick = () => {
+        const a = document.createElement('a');
+        a.href = fileObj.dataURL;
+        a.download = fileObj.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+
+      // Sil butonu
+      const deleteBtn = fileItem.querySelector('.delete-btn');
+      deleteBtn.onclick = () => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        store.delete(fileObj.id);
+        tx.oncomplete = () => {
+          fileItem.remove();
+        };
+      };
+
+      fileList.appendChild(fileItem);
+    }
+
+    // Dosya yükle butonu
+    function uploadFile() {
+      const fileInput = document.getElementById('fileUpload');
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      if (!db) {
+        alert('Veritabanı henüz hazır değil, lütfen sayfayı yenileyin.');
+        return;
+      }
+
+      saveFileToDB(file);
+      fileInput.value = '';
+    }
+
+    // Giriş butonu
     document.getElementById('loginBtn').addEventListener('click', function () {
       document.getElementById('loginPage').style.display = 'none';
       document.getElementById('mainContent').style.display = 'block';
       document.getElementById('logoutBtn').style.display = 'inline-block';
     });
 
+    // Çıkış fonksiyonu
     function logout() {
       document.getElementById('mainContent').style.display = 'none';
       document.getElementById('loginPage').style.display = 'flex';
       document.getElementById('logoutBtn').style.display = 'none';
     }
 
-    function uploadFile() {
-      const fileInput = document.getElementById('fileUpload');
-      const file = fileInput.files[0];
-      if (!file) return;
-
-      const fileList = document.getElementById('fileList');
-
-      const fileURL = URL.createObjectURL(file);
-      const fileItem = document.createElement('div');
-      fileItem.className = 'file-item';
-
-      fileItem.innerHTML = `
-        <span>${file.name}</span>
-        <div class="file-actions">
-          <button class="download-btn" onclick="downloadFile('${fileURL}', '${file.name}')">İndir</button>
-          <button class="delete-btn" onclick="this.closest('.file-item').remove(); URL.revokeObjectURL('${fileURL}');">Sil</button>
-        </div>
-      `;
-
-      fileList.appendChild(fileItem);
-      fileInput.value = '';
-    }
-
-    function downloadFile(url, name) {
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-
+    // Rehbere ekle (VCF dosyası indir)
     function addToContacts() {
-      // VCF format oluştur ve indirme işlemi başlat
       const vcfData = `BEGIN:VCARD
 VERSION:3.0
 FN:Yurt Yapı Alüminyum Sistemleri
