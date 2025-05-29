@@ -5,156 +5,185 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yurt Yapı Alüminyum Sistemleri</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: #ecf0f1;
+            color: #2c3e50;
         }
+
         header {
-            background-color: #2c3e50;
+            background-color: #1a252f;
             color: white;
-            padding: 5px 0;
+            padding: 10px 0;
             text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+
         h1 {
-            margin: 5px 0;
-            font-size: 1.4em;
-            font-weight: 600;
+            margin: 0;
+            font-size: 1.6em;
         }
+
         .container {
-            max-width: 550px;
-            margin: 20px auto;
-            padding: 15px;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
             background-color: white;
-            border-radius: 6px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
+
         .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 80px;
+            height: 100px;
         }
+
         .login-btn {
-            display: block;
-            width: 180px;
-            padding: 10px;
-            background-color: #3498db;
+            background-color: #2980b9;
             color: white;
-            text-align: center;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.95em;
+            padding: 12px 25px;
             border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: bold;
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: background 0.3s ease;
         }
+
+        .login-btn:hover {
+            background-color: #2471a3;
+        }
+
         .content-sections {
             display: none;
             margin-top: 10px;
         }
+
         .section {
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
+
         .contact-info {
-            border-left: 3px solid #3498db;
+            background-color: #eaf2f8;
+            border-left: 5px solid #2980b9;
         }
+
         .files-section {
-            border-left: 3px solid #27ae60;
+            background-color: #eafaf1;
+            border-left: 5px solid #27ae60;
         }
+
         .section-title {
-            color: #2c3e50;
-            margin: 0 0 12px 0;
-            font-size: 1.2em;
-            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.3em;
             font-weight: bold;
-        }
-        .contact-details {
-            font-size: 0.85em;
-        }
-        .contact-details div {
-            margin: 5px 0;
-        }
-        .file-upload {
-            margin-top: 10px;
-            padding: 12px;
-            border: 1px dashed #ccc;
-            border-radius: 4px;
             text-align: center;
-            background-color: white;
-            font-size: 0.85em;
+            color: #2c3e50;
         }
+
+        .contact-details {
+            font-size: 0.95em;
+        }
+
+        .contact-details div {
+            margin: 6px 0;
+        }
+
+        .file-upload {
+            padding: 15px;
+            border: 2px dashed #bdc3c7;
+            border-radius: 6px;
+            text-align: center;
+            background-color: #ffffff;
+        }
+
         .file-upload input {
-            margin: 10px 0;
+            margin-top: 10px;
             width: 100%;
         }
+
         .action-btn {
-            padding: 8px;
-            background-color: #3498db;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #2980b9;
             color: white;
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
+            font-size: 0.95em;
             cursor: pointer;
-            font-size: 0.85em;
-            width: 100%;
-            margin-top: 10px;
         }
+
         .uploaded-files {
-            margin-top: 12px;
-            font-size: 0.85em;
+            margin-top: 20px;
+            font-size: 0.9em;
         }
+
         .file-item {
+            background-color: #fdfdfd;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 10px;
-            border-bottom: 1px solid #eee;
-            margin: 5px 0;
-            background-color: #fdfdfd;
         }
+
         .file-actions {
             display: flex;
             gap: 10px;
         }
+
         .file-actions button {
-            padding: 8px 15px;
+            padding: 8px 12px;
             border: none;
             border-radius: 4px;
+            font-weight: bold;
             cursor: pointer;
             font-size: 0.9em;
-            font-weight: bold;
         }
+
         .download-btn {
             background-color: #27ae60;
             color: white;
         }
+
         .delete-btn {
             background-color: #e74c3c;
             color: white;
         }
+
         .add-contact-btn {
-            background-color: #3498db; /* Mavi renk */
-            color: white;
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85em;
+            margin-top: 15px;
             width: 100%;
-            margin-top: 10px;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.95em;
             font-weight: bold;
+            cursor: pointer;
         }
+
         footer {
-            background-color: #2c3e50;
+            background-color: #1a252f;
             color: white;
             text-align: center;
             padding: 15px 0;
-            margin-top: 30px;
-            font-size: 0.8em;
+            font-size: 0.85em;
+            margin-top: 40px;
         }
     </style>
 </head>
@@ -182,7 +211,7 @@
 
             <div class="section files-section">
                 <h2 class="section-title">Dosya Yönetimi</h2>
-                
+
                 <div class="file-upload">
                     <h3>Dosya Yükle</h3>
                     <input type="file" id="fileUpload" name="fileUpload">
@@ -198,14 +227,16 @@
         </div>
     </div>
 
-    <footer></footer>
+    <footer>
+        &copy; 2025 Yurt Yapı Alüminyum Sistemleri
+    </footer>
 
     <script>
         const state = {
             uploadedFiles: []
         };
 
-        document.getElementById('loginBtn').addEventListener('click', function() {
+        document.getElementById('loginBtn').addEventListener('click', function () {
             document.getElementById('contentSections').style.display = 'block';
             this.style.display = 'none';
         });
@@ -214,12 +245,12 @@
             const fileInput = document.getElementById('fileUpload');
             const file = fileInput.files[0];
             const maxSize = 600 * 1024 * 1024;
-            
+
             if (!file) {
                 alert('Lütfen bir dosya seçin!');
                 return;
             }
-            
+
             if (file.size > maxSize) {
                 alert('Dosya boyutu 600MB\'dan büyük olamaz!');
                 return;
@@ -241,12 +272,12 @@
         function renderFileList() {
             const fileList = document.getElementById('fileList');
             fileList.innerHTML = '';
-            
+
             if (state.uploadedFiles.length === 0) {
                 fileList.innerHTML = '<p>Henüz dosya yüklenmedi.</p>';
                 return;
             }
-            
+
             state.uploadedFiles.forEach(file => {
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
@@ -266,7 +297,7 @@
         function downloadFile(fileId) {
             const file = state.uploadedFiles.find(f => f.id === fileId);
             if (!file) return;
-            
+
             const url = URL.createObjectURL(file.file);
             const a = document.createElement('a');
             a.href = url;
@@ -298,8 +329,7 @@
             const email = "info@yurtyapialuminyum.com";
             const address = "İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL";
             const company = "Yurt Yapı Alüminyum Sistemleri";
-            
-            // vCard formatında kişi bilgisi oluştur
+
             const vCard = `BEGIN:VCARD
 VERSION:3.0
 FN:${name}
@@ -309,22 +339,18 @@ EMAIL:${email}
 ADR:;;${address}
 NOTE:${company}
 END:VCARD`;
-            
-            // vCard'ı blob olarak oluştur
+
             const blob = new Blob([vCard], { type: 'text/vcard' });
             const url = URL.createObjectURL(blob);
-            
-            // Kullanıcının indirmesi için bağlantı oluştur
+
             const link = document.createElement('a');
             link.href = url;
             link.download = 'ismail_yesilyurt.vcf';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            // Tarayıcıda açılması için yeni bir sekme aç
+
             window.open(url, '_blank');
-            
             alert('İsmail Yeşilyurt kişisi rehberinize eklendi!');
         }
 
