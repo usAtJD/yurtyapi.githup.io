@@ -35,25 +35,27 @@
       flex-direction: column;
       height: 100vh;
       text-align: center;
+      gap: 20px;
     }
 
-    .login-box {
+    .login-box, .login-title-box {
       background-color: white;
       padding: 15px 25px;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
       min-width: 250px;
+      user-select: none;
     }
 
-    .login-title {
+    .login-title-box {
       font-size: 2em;
       font-weight: bold;
       color: #2c3e50;
-      user-select: none;
+    }
+
+    .login-box {
+      display: flex;
+      justify-content: center;
     }
 
     .login-btn {
@@ -68,6 +70,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       transition: background 0.3s ease;
       width: 100%;
+      user-select: none;
     }
 
     .login-btn:hover {
@@ -76,22 +79,23 @@
 
     .main-title-box {
       background-color: white;
-      padding: 10px 20px;
+      padding: 15px 30px;
       margin-bottom: 30px;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      font-size: 1.3em;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      font-size: 1.6em; /* büyütüldü */
       font-weight: bold;
       text-align: center;
       color: #2c3e50;
       display: inline-block;
       vertical-align: middle;
+      user-select: none;
     }
 
     .logout-btn {
       position: absolute;
       top: 20px;
-      right: 140px; /* Yurt yapı aleminyum sistemlerinin yanına */
+      right: 140px; /* Yurt yapı alüminyum sistemlerinin yanına */
       font-size: 0.8em;
       padding: 3px 7px;
       background-color: transparent;
@@ -201,6 +205,7 @@
       font-weight: bold;
       cursor: pointer;
       font-size: 0.9em;
+      user-select: none;
     }
 
     .download-btn {
@@ -224,6 +229,7 @@
       font-size: 0.95em;
       font-weight: bold;
       cursor: pointer;
+      user-select: none;
     }
 
     footer {
@@ -237,8 +243,8 @@
 
   <!-- Giriş Sayfası -->
   <div id="loginPage" class="login-container">
+    <div class="login-title-box">Yurt Yapı</div>
     <div class="login-box">
-      <div class="login-title">Yurt Yapı</div>
       <button id="loginBtn" class="login-btn">GİRİŞ</button>
     </div>
   </div>
@@ -298,18 +304,29 @@
 
       const fileList = document.getElementById('fileList');
 
+      const fileURL = URL.createObjectURL(file);
       const fileItem = document.createElement('div');
       fileItem.className = 'file-item';
+
       fileItem.innerHTML = `
         <span>${file.name}</span>
         <div class="file-actions">
-          <button class="download-btn">İndir</button>
-          <button class="delete-btn" onclick="this.closest('.file-item').remove()">Sil</button>
+          <button class="download-btn" onclick="downloadFile('${fileURL}', '${file.name}')">İndir</button>
+          <button class="delete-btn" onclick="this.closest('.file-item').remove(); URL.revokeObjectURL('${fileURL}');">Sil</button>
         </div>
       `;
 
       fileList.appendChild(fileItem);
       fileInput.value = '';
+    }
+
+    function downloadFile(url, name) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
 
     function addToContacts() {
