@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yurt Yapı Alüminyum Sistemleri</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -37,13 +35,16 @@
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            position: relative;
         }
 
         .login-container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 300px;
+            text-align: center;
         }
 
         .login-btn {
@@ -57,6 +58,7 @@
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             transition: background 0.3s ease;
+            margin-top: 20px;
         }
 
         .login-btn:hover {
@@ -176,6 +178,25 @@
             font-weight: bold;
             cursor: pointer;
         }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 0.8em;
+            padding: 5px 10px;
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        footer {
+            border-top: 1px solid #ccc;
+            margin-top: 40px;
+            padding: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -184,6 +205,8 @@
     </header>
 
     <div class="container">
+        <button class="logout-btn" onclick="logout()" style="display:none;" id="logoutBtn">ÇIKIŞ</button>
+
         <div class="login-container">
             <button id="loginBtn" class="login-btn">GİRİŞ</button>
         </div>
@@ -202,7 +225,6 @@
 
             <div class="section files-section">
                 <h2 class="section-title">Dosya Yönetimi</h2>
-
                 <div class="file-upload">
                     <h3>Dosya Yükle</h3>
                     <input type="file" id="fileUpload" name="fileUpload">
@@ -217,34 +239,39 @@
         </div>
     </div>
 
-    <script>
-        const state = {
-            uploadedFiles: []
-        };
+    <footer></footer>
 
+    <script>
         document.getElementById('loginBtn').addEventListener('click', function () {
             document.getElementById('contentSections').style.display = 'block';
             this.style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'inline-block';
         });
+
+        function logout() {
+            document.getElementById('contentSections').style.display = 'none';
+            document.getElementById('loginBtn').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'none';
+        }
 
         function uploadFile() {
             const fileInput = document.getElementById('fileUpload');
             const file = fileInput.files[0];
             if (!file) return;
 
-            const fileName = file.name;
+            const fileList = document.getElementById('fileList');
 
             const fileItem = document.createElement('div');
             fileItem.className = 'file-item';
             fileItem.innerHTML = `
-                <span>${fileName}</span>
+                <span>${file.name}</span>
                 <div class="file-actions">
                     <button class="download-btn">İndir</button>
                     <button class="delete-btn" onclick="this.closest('.file-item').remove()">Sil</button>
                 </div>
             `;
 
-            document.getElementById('fileList').appendChild(fileItem);
+            fileList.appendChild(fileItem);
             fileInput.value = '';
         }
 
