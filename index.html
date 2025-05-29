@@ -5,7 +5,234 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Yurt Yapı Giriş</title>
   <style>
-    /* ... Buraya senin stil kodların gelecek, hiç değiştirilmedi ... */
+    /* Senin mevcut stil kodların burada */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f7;
+      color: #2c3e50;
+      height: 100vh;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      text-align: center;
+      gap: 20px;
+    }
+
+    .login-title-box {
+      background-color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      min-width: 250px;
+      user-select: none;
+      font-size: 2em;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .login-box {
+      user-select: none;
+    }
+
+    .login-btn {
+      background-color: #2980b9;
+      color: white;
+      border-radius: 8px;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 1.3em;
+      font-weight: bold;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-btn:hover {
+      background-color: #2471a3;
+      text-decoration: none;
+    }
+
+    .main-title-box {
+      background-color: white;
+      padding: 15px 30px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      font-size: 1.6em;
+      font-weight: bold;
+      text-align: center;
+      color: #2c3e50;
+      display: inline-block;
+      vertical-align: middle;
+      user-select: none;
+    }
+
+    .logout-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      font-size: 1.2em;
+      padding: 5px 10px;
+      background-color: transparent;
+      color: #2c3e50;
+      border: none;
+      cursor: pointer;
+      user-select: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      z-index: 1000;
+      line-height: 1;
+    }
+    .logout-btn:hover {
+      color: #e74c3c;
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .section {
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .contact-info {
+      background-color: #eaf2f8;
+      border-left: 5px solid #2980b9;
+    }
+
+    .files-section {
+      background-color: #eafaf1;
+      border-left: 5px solid #27ae60;
+    }
+
+    .section-title {
+      margin-bottom: 15px;
+      font-size: 1.3em;
+      font-weight: bold;
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .contact-details {
+      font-size: 0.95em;
+    }
+
+    .contact-details div {
+      margin: 6px 0;
+    }
+
+    .file-upload {
+      padding: 15px;
+      border: 2px dashed #bdc3c7;
+      border-radius: 6px;
+      text-align: center;
+      background-color: #ffffff;
+    }
+
+    .file-upload input {
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .action-btn {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.95em;
+      cursor: pointer;
+    }
+
+    .uploaded-files {
+      margin-top: 20px;
+      font-size: 0.9em;
+    }
+
+    .file-item {
+      background-color: #fdfdfd;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .file-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .file-actions button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.9em;
+      user-select: none;
+    }
+
+    .download-btn {
+      background-color: #27ae60;
+      color: white;
+    }
+
+    .delete-btn {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .add-contact-btn {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.95em;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    footer {
+      border-top: 1px solid #ccc;
+      margin-top: 40px;
+      padding: 20px 0;
+    }
   </style>
 </head>
 <body>
@@ -54,79 +281,157 @@
   <footer></footer>
 
   <script>
-    let uploadedFiles = [];
+    // IndexedDB setup
+    let db;
+    const DB_NAME = 'YurtYapiFilesDB';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'files';
 
-    document.getElementById('loginBtn').addEventListener('click', function () {
-      document.getElementById('loginPage').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
-      document.getElementById('logoutBtn').style.display = 'inline-block';
-    });
+    // Aç IndexedDB
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-    function logout() {
-      document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('loginPage').style.display = 'flex';
-      document.getElementById('logoutBtn').style.display = 'none';
-      clearFiles();
+        request.onerror = () => reject('Veritabanı açılamadı.');
+        request.onsuccess = () => {
+          db = request.result;
+          resolve(db);
+        };
+        request.onupgradeneeded = (e) => {
+          db = e.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+          }
+        };
+      });
     }
 
-    function clearFiles() {
-      uploadedFiles.forEach(f => URL.revokeObjectURL(f.url));
-      uploadedFiles = [];
-      document.getElementById('fileList').innerHTML = '';
+    // Dosya ekle (Blob)
+    function addFile(file) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(STORE_NAME, 'readwrite');
+        const store = transaction.objectStore(STORE_NAME);
+
+        const data = {
+          name: file.name,
+          type: file.type,
+          blob: file
+        };
+
+        const request = store.add(data);
+
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject('Dosya eklenirken hata oluştu.');
+      });
     }
 
-    function uploadFile() {
-      const fileInput = document.getElementById('fileUpload');
-      const files = Array.from(fileInput.files);
-      if (files.length === 0) return;
+    // Tüm dosyaları getir
+    function getAllFiles() {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(STORE_NAME, 'readonly');
+        const store = transaction.objectStore(STORE_NAME);
 
+        const request = store.getAll();
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject('Dosyalar alınamadı.');
+      });
+    }
+
+    // Dosya sil (id ile)
+    function deleteFileById(id) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(STORE_NAME, 'readwrite');
+        const store = transaction.objectStore(STORE_NAME);
+
+        const request = store.delete(id);
+
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject('Dosya silinirken hata oluştu.');
+      });
+    }
+
+    // Dosyaları listele ve DOM'a ekle
+    async function listFiles() {
+      const files = await getAllFiles();
       const fileList = document.getElementById('fileList');
+      fileList.innerHTML = '';
+
+      if (files.length === 0) {
+        fileList.innerHTML = '<p>Henüz dosya yüklenmedi.</p>';
+        return;
+      }
 
       files.forEach(file => {
-        // URL oluştur
-        const fileURL = URL.createObjectURL(file);
-
-        // Dosyayı kaydet (bellekte)
-        uploadedFiles.push({file, url: fileURL});
-
-        // Liste öğesi oluştur
         const fileItem = document.createElement('div');
         fileItem.className = 'file-item';
 
         fileItem.innerHTML = `
           <span>${file.name}</span>
           <div class="file-actions">
-            <button class="download-btn" onclick="downloadFile('${fileURL}', '${file.name}')">İndir</button>
-            <button class="delete-btn" onclick="deleteFile('${file.name}', this)">Sil</button>
+            <button class="download-btn">İndir</button>
+            <button class="delete-btn">Sil</button>
           </div>
         `;
 
+        const downloadBtn = fileItem.querySelector('.download-btn');
+        const deleteBtn = fileItem.querySelector('.delete-btn');
+
+        downloadBtn.addEventListener('click', () => {
+          const url = URL.createObjectURL(file.blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = file.name;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        });
+
+        deleteBtn.addEventListener('click', async () => {
+          if (confirm(`"${file.name}" dosyasını silmek istediğinize emin misiniz?`)) {
+            await deleteFileById(file.id);
+            listFiles();
+          }
+        });
+
         fileList.appendChild(fileItem);
       });
+    }
+
+    // Dosya yükle
+    async function uploadFile() {
+      const fileInput = document.getElementById('fileUpload');
+      const files = Array.from(fileInput.files);
+
+      if (files.length === 0) {
+        alert('Lütfen dosya seçin.');
+        return;
+      }
+
+      for (const file of files) {
+        await addFile(file);
+      }
 
       fileInput.value = '';
+      listFiles();
     }
 
-    function downloadFile(url, name) {
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+    // Giriş çıkış fonksiyonları
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+      document.getElementById('logoutBtn').style.display = 'inline-block';
+      listFiles();
+    });
+
+    function logout() {
+      document.getElementById('mainContent').style.display = 'none';
+      document.getElementById('loginPage').style.display = 'flex';
+      document.getElementById('logoutBtn').style.display = 'none';
     }
 
-    function deleteFile(fileName, btnElement) {
-      // uploadedFiles listesinden sil
-      const index = uploadedFiles.findIndex(f => f.file.name === fileName);
-      if (index !== -1) {
-        URL.revokeObjectURL(uploadedFiles[index].url);
-        uploadedFiles.splice(index, 1);
-      }
-      // HTML’den kaldır
-      btnElement.closest('.file-item').remove();
-    }
-
+    // Rehbere ekle fonksiyonu
     function addToContacts() {
       const vcfData = `BEGIN:VCARD
 VERSION:3.0
@@ -147,6 +452,16 @@ END:VCARD`;
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+    }
+
+    // Sayfa yüklendiğinde DB aç
+    window.onload = async () => {
+      try {
+        await openDB();
+      } catch (e) {
+        alert('IndexedDB açılamadı, dosya saklama çalışmayacak!');
+        console.error(e);
+      }
     }
   </script>
 </body>
