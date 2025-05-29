@@ -37,12 +37,6 @@
       text-align: center;
     }
 
-    .login-header {
-      font-size: 2em;
-      margin-bottom: 20px;
-      color: #2c3e50;
-    }
-
     .login-btn {
       background-color: #2980b9;
       color: white;
@@ -60,9 +54,12 @@
       background-color: #2471a3;
     }
 
-    .content-sections {
-      display: none;
-      margin-top: 10px;
+    .main-title {
+      text-align: center;
+      font-size: 1.8em;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #2c3e50;
     }
 
     .section {
@@ -196,41 +193,40 @@
 </head>
 <body>
 
-  <button class="logout-btn" onclick="logout()" style="display:none;" id="logoutBtn">ÇIKIŞ</button>
+  <button class="logout-btn" onclick="logout()" style="display:none;" id="logoutBtn">X</button>
 
+  <!-- Giriş Sayfası -->
   <div id="loginPage" class="login-container">
-    <div class="login-header">Yurt Yapı</div>
     <button id="loginBtn" class="login-btn">GİRİŞ</button>
   </div>
 
+  <!-- Ana İçerik -->
   <div id="mainContent" class="container" style="display:none;">
-    <div id="contentSections" class="content-sections" style="display:block;">
+    <div class="main-title">Yurt Yapı Alüminyum Sistemleri</div>
 
-      <div class="section contact-info">
-        <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
-        <div class="contact-details">
-          <div><strong>Kurucu:</strong> İsmail Yeşilyurt</div>
-          <div><strong>Tel:</strong> 0535 313 37 90</div>
-          <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
-          <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
-        </div>
-        <button class="add-contact-btn" onclick="addToContacts()">REHBERE EKLE</button>
+    <div class="section contact-info">
+      <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
+      <div class="contact-details">
+        <div><strong>Kurucu:</strong> İsmail Yeşilyurt</div>
+        <div><strong>Tel:</strong> 0535 313 37 90</div>
+        <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
+        <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
+      </div>
+      <button class="add-contact-btn" onclick="addToContacts()">REHBERE EKLE</button>
+    </div>
+
+    <div class="section files-section">
+      <h2 class="section-title">Dosya Yönetimi</h2>
+      <div class="file-upload">
+        <h3>Dosya Yükle</h3>
+        <input type="file" id="fileUpload" name="fileUpload">
+        <button class="action-btn" onclick="uploadFile()">Yükle</button>
       </div>
 
-      <div class="section files-section">
-        <h2 class="section-title">Dosya Yönetimi</h2>
-        <div class="file-upload">
-          <h3>Dosya Yükle</h3>
-          <input type="file" id="fileUpload" name="fileUpload">
-          <button class="action-btn" onclick="uploadFile()">Yükle</button>
-        </div>
-
-        <div class="uploaded-files">
-          <h3>Yüklenen Dosyalar</h3>
-          <div id="fileList"></div>
-        </div>
+      <div class="uploaded-files">
+        <h3>Yüklenen Dosyalar</h3>
+        <div id="fileList"></div>
       </div>
-
     </div>
   </div>
 
@@ -276,3 +272,4 @@
   </script>
 </body>
 </html>
+
