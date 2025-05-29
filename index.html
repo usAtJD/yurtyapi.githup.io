@@ -37,6 +37,19 @@
       text-align: center;
     }
 
+    .login-title-top {
+      background-color: white;
+      padding: 15px 25px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      font-size: 2em;
+      font-weight: bold;
+      color: #2c3e50;
+      display: inline-block;
+      min-width: 220px;
+    }
+
     .login-title-box {
       background-color: white;
       padding: 15px 25px;
@@ -70,23 +83,31 @@
       background-color: #2471a3;
     }
 
-    /* Yeni kutu: giriş ve yurt yapı yan yana */
-    .login-box-wrapper {
+    /* Ana içerikte yurt yapı ve çıkış yan yana */
+    .main-title-wrapper {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: white;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .main-title-box {
+      background-color: white;
       padding: 15px 25px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #2c3e50;
+      display: inline-block;
+      min-width: 280px;
+      user-select: none;
     }
 
     .logout-btn {
-      position: absolute;
-      top: 28px;
-      right: 250px; /* Yurt Yapı kutusunun hemen yanına */
       font-size: 0.8em;
-      padding: 2px 8px;
+      padding: 4px 10px;
       background-color: transparent;
       color: #2c3e50;
       border: none;
@@ -96,24 +117,11 @@
       user-select: none;
       transition: color 0.3s ease;
       line-height: 1;
+      box-shadow: none;
     }
 
     .logout-btn:hover {
       color: #2980b9;
-    }
-
-    .main-title-box {
-      background-color: white;
-      padding: 15px 25px;
-      margin-bottom: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      font-size: 1.8em;
-      font-weight: bold;
-      text-align: center;
-      color: #2c3e50;
-      display: inline-block;
-      min-width: 280px;
     }
 
     .section {
@@ -236,17 +244,16 @@
 
   <!-- Giriş Sayfası -->
   <div id="loginPage" class="login-container">
-    <div class="login-box-wrapper">
-      <div class="login-title-box">Yurt Yapı</div>
-      <button id="loginBtn" class="login-btn">GİRİŞ</button>
-    </div>
+    <div class="login-title-top">Yurt Yapı</div>
+    <div class="login-title-box">GİRİŞ</div>
+    <button id="loginBtn" class="login-btn">GİRİŞ</button>
   </div>
 
   <!-- Ana İçerik -->
   <div id="mainContent" class="container" style="display:none;">
-    <button class="logout-btn" onclick="logout()" id="logoutBtn">X</button>
-    <div style="display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 30px;">
+    <div class="main-title-wrapper">
       <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
+      <button class="logout-btn" onclick="logout()" id="logoutBtn">X</button>
     </div>
 
     <div class="section contact-info">
@@ -281,13 +288,11 @@
     document.getElementById('loginBtn').addEventListener('click', function () {
       document.getElementById('loginPage').style.display = 'none';
       document.getElementById('mainContent').style.display = 'block';
-      document.getElementById('logoutBtn').style.display = 'inline-block';
     });
 
     function logout() {
       document.getElementById('mainContent').style.display = 'none';
       document.getElementById('loginPage').style.display = 'flex';
-      document.getElementById('logoutBtn').style.display = 'none';
     }
 
     function uploadFile() {
@@ -312,7 +317,6 @@
     }
 
     function addToContacts() {
-      // vCard içeriği (kişisel bilgilerinizi burada güncelleyebilirsiniz)
       const vCardData = `BEGIN:VCARD
 VERSION:3.0
 FN:Yurt Yapı Alüminyum Sistemleri
@@ -326,7 +330,7 @@ END:VCARD`;
 
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'yurt_yapi_aluminyum.vcf';
+      a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -336,4 +340,3 @@ END:VCARD`;
   </script>
 </body>
 </html>
-
