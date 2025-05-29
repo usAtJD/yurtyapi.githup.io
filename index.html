@@ -46,7 +46,8 @@
       font-size: 1.8em;
       font-weight: bold;
       color: #2c3e50;
-      border: 1px solid #ccc; /* kutucuk için eklendi */
+      display: inline-block;
+      min-width: 220px;
     }
 
     .login-btn {
@@ -60,10 +61,45 @@
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       transition: background 0.3s ease;
+      margin-top: 10px;
+      display: inline-block;
+      min-width: 120px;
     }
 
     .login-btn:hover {
       background-color: #2471a3;
+    }
+
+    /* Yeni kutu: giriş ve yurt yapı yan yana */
+    .login-box-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .logout-btn {
+      position: absolute;
+      top: 28px;
+      right: 250px; /* Yurt Yapı kutusunun hemen yanına */
+      font-size: 0.8em;
+      padding: 2px 8px;
+      background-color: transparent;
+      color: #2c3e50;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+      transition: color 0.3s ease;
+      line-height: 1;
+    }
+
+    .logout-btn:hover {
+      color: #2980b9;
     }
 
     .main-title-box {
@@ -76,30 +112,10 @@
       font-weight: bold;
       text-align: center;
       color: #2c3e50;
-      display: inline-block; /* kutucuk için eklendi */
-      border: 1px solid #ccc; /* kutucuk için eklendi */
-      padding-left: 25px;
-      padding-right: 25px;
+      display: inline-block;
+      min-width: 280px;
     }
 
-    .logout-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 1em; /* küçültüldü */
-      padding: 0;
-      background: none;
-      color: #2c3e50;
-      border: none;
-      cursor: pointer;
-      line-height: 1;
-      width: 20px;
-      height: 20px;
-      font-weight: bold;
-      user-select: none;
-    }
-
-    /* Diğer CSS'ler aynı kaldı */
     .section {
       padding: 20px;
       border-radius: 8px;
@@ -218,17 +234,20 @@
 </head>
 <body>
 
-  <button class="logout-btn" onclick="logout()" style="display:none;" id="logoutBtn">X</button>
-
   <!-- Giriş Sayfası -->
   <div id="loginPage" class="login-container">
-    <div class="login-title-box">Yurt Yapı</div>
-    <button id="loginBtn" class="login-btn">GİRİŞ</button>
+    <div class="login-box-wrapper">
+      <div class="login-title-box">Yurt Yapı</div>
+      <button id="loginBtn" class="login-btn">GİRİŞ</button>
+    </div>
   </div>
 
   <!-- Ana İçerik -->
   <div id="mainContent" class="container" style="display:none;">
-    <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
+    <button class="logout-btn" onclick="logout()" id="logoutBtn">X</button>
+    <div style="display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 30px;">
+      <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
+    </div>
 
     <div class="section contact-info">
       <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
@@ -293,8 +312,28 @@
     }
 
     function addToContacts() {
-      alert("İletişim bilgileri rehbere eklendi (simülasyon).");
+      // vCard içeriği (kişisel bilgilerinizi burada güncelleyebilirsiniz)
+      const vCardData = `BEGIN:VCARD
+VERSION:3.0
+FN:Yurt Yapı Alüminyum Sistemleri
+TEL;TYPE=CELL:05353133790
+EMAIL:info@yurtyapialuminyum.com
+ADR;TYPE=WORK:;;İnönü Mahallesi 361 Sk No 48;BAĞCILAR;İSTANBUL;;
+END:VCARD`;
+
+      const blob = new Blob([vCardData], { type: 'text/vcard' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'yurt_yapi_aluminyum.vcf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      URL.revokeObjectURL(url);
     }
   </script>
 </body>
 </html>
+
