@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Yurt Yapı Giriş</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
@@ -17,7 +14,6 @@
       color: #2c3e50;
       height: 100vh;
     }
-
     .container {
       max-width: 600px;
       margin: 40px auto;
@@ -27,7 +23,6 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
       position: relative;
     }
-
     .login-container {
       display: flex;
       justify-content: center;
@@ -37,7 +32,6 @@
       text-align: center;
       gap: 20px;
     }
-
     .login-title-box {
       background-color: white;
       padding: 15px 25px;
@@ -49,11 +43,7 @@
       font-weight: bold;
       color: #2c3e50;
     }
-
-    .login-box {
-      user-select: none;
-    }
-
+    .login-box { user-select: none; }
     .login-btn {
       background-color: #2980b9;
       color: white;
@@ -66,12 +56,10 @@
       user-select: none;
       transition: background-color 0.3s ease;
     }
-
     .login-btn:hover {
       background-color: #2471a3;
       text-decoration: none;
     }
-
     .main-title-box {
       background-color: white;
       padding: 15px 30px;
@@ -82,245 +70,71 @@
       font-weight: bold;
       text-align: center;
       color: #2c3e50;
-      display: inline-block;
-      vertical-align: middle;
-      user-select: none;
     }
-
-    .logout-btn {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      font-size: 1.2em;
-      padding: 5px 10px;
-      background-color: transparent;
-      color: #2c3e50;
-      border: none;
-      cursor: pointer;
-      user-select: none;
-      font-weight: bold;
-      transition: color 0.3s ease;
-      z-index: 1000;
-      line-height: 1;
-    }
-    .logout-btn:hover {
-      color: #e74c3c;
-    }
-
-    .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 30px;
-      position: relative;
-    }
-
-    .section {
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-
-    .contact-info {
-      background-color: #eaf2f8;
-      border-left: 5px solid #2980b9;
-    }
-
     .files-section {
       background-color: #eafaf1;
       border-left: 5px solid #27ae60;
-    }
-
-    .section-title {
-      margin-bottom: 15px;
-      font-size: 1.3em;
-      font-weight: bold;
-      text-align: center;
-      color: #2c3e50;
-    }
-
-    .contact-details {
-      font-size: 0.95em;
-    }
-
-    .contact-details div {
-      margin: 6px 0;
-    }
-
-    .file-upload {
-      padding: 15px;
-      border: 2px dashed #bdc3c7;
-      border-radius: 6px;
-      text-align: center;
-      background-color: #ffffff;
-    }
-
-    .file-upload input {
-      margin-top: 10px;
-      width: 100%;
-    }
-
-    .action-btn {
-      margin-top: 10px;
-      padding: 10px;
-      background-color: #2980b9;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 0.95em;
-      cursor: pointer;
-    }
-
-    .uploaded-files {
+      padding: 20px;
+      border-radius: 8px;
       margin-top: 20px;
-      font-size: 0.9em;
     }
-
+    .uploaded-files {
+      margin-top: 10px;
+    }
     .file-item {
-      background-color: #fdfdfd;
+      background-color: #fff;
       padding: 10px;
-      margin: 8px 0;
-      border-radius: 5px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      border-radius: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-
-    .file-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .file-actions button {
-      padding: 8px 12px;
-      border: none;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 0.9em;
-      user-select: none;
-    }
-
-    .download-btn {
-      background-color: #27ae60;
-      color: white;
-    }
-
-    .delete-btn {
-      background-color: #e74c3c;
-      color: white;
-    }
-
-    .add-contact-btn {
-      margin-top: 15px;
-      width: 100%;
-      padding: 10px;
+    .file-item button {
+      margin-left: 10px;
       background-color: #3498db;
       color: white;
       border: none;
-      border-radius: 5px;
-      font-size: 0.95em;
-      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 4px;
       cursor: pointer;
-      user-select: none;
     }
-
-    footer {
-      border-top: 1px solid #ccc;
-      margin-top: 40px;
-      padding: 20px 0;
+    .file-item button.delete {
+      background-color: #e74c3c;
     }
   </style>
 </head>
 <body>
-
-  <!-- Giriş Sayfası -->
-  <div id="loginPage" class="login-container">
-    <div class="login-title-box">Yurt Yapı</div>
-    <div class="login-box">
-      <button id="loginBtn" class="login-btn">GİRİŞ</button>
+  <div class="container">
+    <div class="main-title-box">YURT YAPI ALEMİNYUM SİSTEMLERİ</div>
+    <button class="login-btn" onclick="window.open('https://gofile.io/d/fe7293d7-b871-4970-a9e1-c62fc59d5b02', '_blank')">Dosya Seç (Gofile)</button>
+    
+    <div class="files-section">
+      <div class="section-title">İndirilen Dosyalar</div>
+      <button class="login-btn" onclick="simulateDownload()">Dosyayı İndir (Simülasyon)</button>
+      <div class="uploaded-files" id="fileList"></div>
     </div>
   </div>
-
-  <!-- Ana İçerik -->
-  <div id="mainContent" class="container" style="display:none;">
-    <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:inline-block;">X</button>
-    <div class="header-container">
-      <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
-    </div>
-
-    <div class="section contact-info">
-      <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
-      <div class="contact-details">
-        <div><strong>Kurucu:</strong> İsmail Yeşilyurt</div>
-        <div><strong>Tel:</strong> 0535 313 37 90</div>
-        <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
-        <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
-      </div>
-      <button class="add-contact-btn" onclick="addToContacts()">REHBERE EKLE</button>
-    </div>
-
-    <div class="section files-section">
-      <h2 class="section-title">Dosya Yönetimi</h2>
-      <div class="file-upload">
-        <h3>Dosya Yükle</h3>
-        <input type="file" id="fileUpload" name="fileUpload">
-        <button class="action-btn" onclick="window.open('https://gofile.io/d/fe7293d7-b871-4970-a9e1-c62fc59d5b02', '_blank')">Yükle</button>
-      </div>
-
-      <div class="uploaded-files">
-        <h3>Yüklenen Dosyalar</h3>
-        <div id="fileList">
-          <!-- Manuel olarak eklenecek dosyalar -->
-          <div class="file-item">
-            <span>örnek_dosya.pdf</span>
-            <div class="file-actions">
-              <button class="download-btn" onclick="window.open('https://store4.gofile.io/download/fe7293d7-b871-4970-a9e1-c62fc59d5b02/örnek_dosya.pdf', '_blank')">İndir</button>
-              <button class="delete-btn" onclick="this.closest('.file-item').remove();">Sil</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer></footer>
 
   <script>
-    document.getElementById('loginBtn').addEventListener('click', function () {
-      document.getElementById('loginPage').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
-      document.getElementById('logoutBtn').style.display = 'inline-block';
-    });
+    function simulateDownload() {
+      // Burada örnek bir dosya simüle ediliyor
+      const fileName = "ornek_dosya.pdf";
+      const fileUrl = "#"; // Gerçek bir URL olsaydı bu kısım aktif olurdu
 
-    function logout() {
-      document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('loginPage').style.display = 'flex';
-      document.getElementById('logoutBtn').style.display = 'none';
-    }
-
-    function addToContacts() {
-      const vcfData = `BEGIN:VCARD
-VERSION:3.0
-FN:Yurt Yapı Alüminyum Sistemleri
-ORG:Yurt Yapı Alüminyum Sistemleri
-TEL;TYPE=CELL:05353133790
-EMAIL:info@yurtyapialuminyum.com
-ADR;TYPE=WORK:;;İnönü Mahallesi 361 Sk No 48;BAĞCILAR;İSTANBUL;;
-END:VCARD`;
-
-      const blob = new Blob([vcfData], {type: 'text/vcard'});
-      const url = URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      const fileItem = document.createElement("div");
+      fileItem.className = "file-item";
+      fileItem.innerHTML = `
+        <span>${fileName}</span>
+        <div>
+          <a href="${fileUrl}" download="${fileName}">
+            <button>İndir</button>
+          </a>
+          <button class="delete" onclick="this.closest('.file-item').remove()">Sil</button>
+        </div>
+      `;
+      document.getElementById("fileList").appendChild(fileItem);
     }
   </script>
 </body>
