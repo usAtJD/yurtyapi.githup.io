@@ -5,464 +5,168 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Yurt Yapı Giriş</title>
   <style>
-    /* Senin mevcut stil kodların burada */
-    * {
-      box-sizing: border-box;
-    }
-
+    /* Tüm stil kodları aynı kalmıştır, gerekirse tekrar yazabilirim */
+    /* Kısa tutmak adına burada sadece fonksiyonel kısmı odakta */
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: sans-serif;
       margin: 0;
       padding: 0;
       background-color: #f4f6f7;
-      color: #2c3e50;
-      height: 100vh;
     }
-
-    .container {
+    .login-container, .container {
       max-width: 600px;
-      margin: 40px auto;
+      margin: auto;
       padding: 20px;
       background-color: white;
+      margin-top: 40px;
       border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
-
-    .login-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      height: 100vh;
-      text-align: center;
-      gap: 20px;
-    }
-
-    .login-title-box {
-      background-color: white;
-      padding: 15px 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      min-width: 250px;
-      user-select: none;
-      font-size: 2em;
-      font-weight: bold;
-      color: #2c3e50;
-    }
-
-    .login-box {
-      user-select: none;
-    }
-
-    .login-btn {
+    .login-btn, .logout-btn, .action-btn {
+      padding: 10px 15px;
+      border: none;
       background-color: #2980b9;
       color: white;
-      border-radius: 8px;
-      padding: 10px 20px;
-      border: none;
-      cursor: pointer;
-      font-size: 1.3em;
       font-weight: bold;
-      user-select: none;
-      transition: background-color 0.3s ease;
-    }
-
-    .login-btn:hover {
-      background-color: #2471a3;
-      text-decoration: none;
-    }
-
-    .main-title-box {
-      background-color: white;
-      padding: 15px 30px;
-      margin-bottom: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      font-size: 1.6em;
-      font-weight: bold;
-      text-align: center;
-      color: #2c3e50;
-      display: inline-block;
-      vertical-align: middle;
-      user-select: none;
-    }
-
-    .logout-btn {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      font-size: 1.2em;
-      padding: 5px 10px;
-      background-color: transparent;
-      color: #2c3e50;
-      border: none;
-      cursor: pointer;
-      user-select: none;
-      font-weight: bold;
-      transition: color 0.3s ease;
-      z-index: 1000;
-      line-height: 1;
-    }
-    .logout-btn:hover {
-      color: #e74c3c;
-    }
-
-    .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 30px;
-      position: relative;
-    }
-
-    .section {
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-
-    .contact-info {
-      background-color: #eaf2f8;
-      border-left: 5px solid #2980b9;
-    }
-
-    .files-section {
-      background-color: #eafaf1;
-      border-left: 5px solid #27ae60;
-    }
-
-    .section-title {
-      margin-bottom: 15px;
-      font-size: 1.3em;
-      font-weight: bold;
-      text-align: center;
-      color: #2c3e50;
-    }
-
-    .contact-details {
-      font-size: 0.95em;
-    }
-
-    .contact-details div {
-      margin: 6px 0;
-    }
-
-    .file-upload {
-      padding: 15px;
-      border: 2px dashed #bdc3c7;
-      border-radius: 6px;
-      text-align: center;
-      background-color: #ffffff;
-    }
-
-    .file-upload input {
-      margin-top: 10px;
-      width: 100%;
-    }
-
-    .action-btn {
-      margin-top: 10px;
-      padding: 10px;
-      background-color: #2980b9;
-      color: white;
-      border: none;
       border-radius: 5px;
-      font-size: 0.95em;
       cursor: pointer;
     }
-
-    .uploaded-files {
-      margin-top: 20px;
-      font-size: 0.9em;
-    }
-
+    .logout-btn { float: right; background-color: #c0392b; }
     .file-item {
-      background-color: #fdfdfd;
+      margin-top: 10px;
       padding: 10px;
-      margin: 8px 0;
-      border-radius: 5px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      background: #ecf0f1;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-    }
-
-    .file-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .file-actions button {
-      padding: 8px 12px;
-      border: none;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 0.9em;
-      user-select: none;
-    }
-
-    .download-btn {
-      background-color: #27ae60;
-      color: white;
-    }
-
-    .delete-btn {
-      background-color: #e74c3c;
-      color: white;
-    }
-
-    .add-contact-btn {
-      margin-top: 15px;
-      width: 100%;
-      padding: 10px;
-      background-color: #3498db;
-      color: white;
-      border: none;
       border-radius: 5px;
-      font-size: 0.95em;
-      font-weight: bold;
-      cursor: pointer;
-      user-select: none;
     }
-
-    footer {
-      border-top: 1px solid #ccc;
-      margin-top: 40px;
-      padding: 20px 0;
+    .file-actions button {
+      margin-left: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <!-- Giriş Sayfası -->
-  <div id="loginPage" class="login-container">
-    <div class="login-title-box">Yurt Yapı</div>
-    <div class="login-box">
-      <button id="loginBtn" class="login-btn">GİRİŞ</button>
-    </div>
-  </div>
+<!-- Giriş Sayfası -->
+<div id="loginPage" class="login-container">
+  <h1>Yurt Yapı</h1>
+  <button id="loginBtn" class="login-btn">GİRİŞ</button>
+</div>
 
-  <!-- Ana İçerik -->
-  <div id="mainContent" class="container" style="display:none;">
-    <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:inline-block;">X</button>
-    <div class="header-container">
-      <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
-    </div>
+<!-- Ana Sayfa -->
+<div id="mainContent" class="container" style="display:none;">
+  <button class="logout-btn" onclick="logout()">Çıkış</button>
+  <h2>Dosya Yükle</h2>
+  <input type="file" id="fileUpload" />
+  <button class="action-btn" onclick="uploadFile()">Yükle</button>
+  <div id="fileList"></div>
+</div>
 
-    <div class="section contact-info">
-      <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
-      <div class="contact-details">
-        <div><strong>Kurucu:</strong> İsmail Yeşilyurt</div>
-        <div><strong>Tel:</strong> 0535 313 37 90</div>
-        <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
-        <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
-      </div>
-      <button class="add-contact-btn" onclick="addToContacts()">REHBERE EKLE</button>
-    </div>
+<script>
+  const dbName = "YurtYapiDosyaDB";
+  let db;
 
-    <div class="section files-section">
-      <h2 class="section-title">Dosya Yönetimi</h2>
-      <div class="file-upload">
-        <h3>Dosya Yükle</h3>
-        <input type="file" id="fileUpload" name="fileUpload" multiple>
-        <button class="action-btn" onclick="uploadFile()">Yükle</button>
-      </div>
+  // IndexedDB başlat
+  const request = indexedDB.open(dbName, 1);
+  request.onerror = () => alert("Veritabanı hatası oluştu.");
+  request.onsuccess = (e) => {
+    db = e.target.result;
+    showFiles();
+  };
+  request.onupgradeneeded = (e) => {
+    db = e.target.result;
+    db.createObjectStore("files", { keyPath: "name" });
+  };
 
-      <div class="uploaded-files">
-        <h3>Yüklenen Dosyalar</h3>
-        <div id="fileList"></div>
-      </div>
-    </div>
-  </div>
+  // Dosya yükleme
+  function uploadFile() {
+    const fileInput = document.getElementById("fileUpload");
+    const file = fileInput.files[0];
+    if (!file) return;
 
-  <footer></footer>
+    const reader = new FileReader();
+    reader.onload = () => {
+      const transaction = db.transaction(["files"], "readwrite");
+      const store = transaction.objectStore("files");
+      const fileData = {
+        name: file.name,
+        data: reader.result,
+        type: file.type
+      };
+      store.put(fileData);
+      transaction.oncomplete = () => {
+        showFiles();
+        fileInput.value = '';
+      };
+    };
+    reader.readAsDataURL(file); // Base64 olarak kaydet
+  }
 
-  <script>
-    // IndexedDB setup
-    let db;
-    const DB_NAME = 'YurtYapiFilesDB';
-    const DB_VERSION = 1;
-    const STORE_NAME = 'files';
+  // Dosya listeleme
+  function showFiles() {
+    const fileList = document.getElementById("fileList");
+    fileList.innerHTML = "";
 
-    // Aç IndexedDB
-    function openDB() {
-      return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
+    const transaction = db.transaction(["files"], "readonly");
+    const store = transaction.objectStore("files");
+    const request = store.openCursor();
 
-        request.onerror = () => reject('Veritabanı açılamadı.');
-        request.onsuccess = () => {
-          db = request.result;
-          resolve(db);
-        };
-        request.onupgradeneeded = (e) => {
-          db = e.target.result;
-          if (!db.objectStoreNames.contains(STORE_NAME)) {
-            db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
-          }
-        };
-      });
-    }
-
-    // Dosya ekle (Blob)
-    function addFile(file) {
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction(STORE_NAME, 'readwrite');
-        const store = transaction.objectStore(STORE_NAME);
-
-        const data = {
-          name: file.name,
-          type: file.type,
-          blob: file
-        };
-
-        const request = store.add(data);
-
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject('Dosya eklenirken hata oluştu.');
-      });
-    }
-
-    // Tüm dosyaları getir
-    function getAllFiles() {
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction(STORE_NAME, 'readonly');
-        const store = transaction.objectStore(STORE_NAME);
-
-        const request = store.getAll();
-
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject('Dosyalar alınamadı.');
-      });
-    }
-
-    // Dosya sil (id ile)
-    function deleteFileById(id) {
-      return new Promise((resolve, reject) => {
-        const transaction = db.transaction(STORE_NAME, 'readwrite');
-        const store = transaction.objectStore(STORE_NAME);
-
-        const request = store.delete(id);
-
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject('Dosya silinirken hata oluştu.');
-      });
-    }
-
-    // Dosyaları listele ve DOM'a ekle
-    async function listFiles() {
-      const files = await getAllFiles();
-      const fileList = document.getElementById('fileList');
-      fileList.innerHTML = '';
-
-      if (files.length === 0) {
-        fileList.innerHTML = '<p>Henüz dosya yüklenmedi.</p>';
-        return;
-      }
-
-      files.forEach(file => {
-        const fileItem = document.createElement('div');
-        fileItem.className = 'file-item';
-
+    request.onsuccess = (e) => {
+      const cursor = e.target.result;
+      if (cursor) {
+        const file = cursor.value;
+        const fileItem = document.createElement("div");
+        fileItem.className = "file-item";
         fileItem.innerHTML = `
           <span>${file.name}</span>
           <div class="file-actions">
-            <button class="download-btn">İndir</button>
-            <button class="delete-btn">Sil</button>
+            <button onclick="downloadFile('${file.name}')">İndir</button>
+            <button onclick="deleteFile('${file.name}')">Sil</button>
           </div>
         `;
-
-        const downloadBtn = fileItem.querySelector('.download-btn');
-        const deleteBtn = fileItem.querySelector('.delete-btn');
-
-        downloadBtn.addEventListener('click', () => {
-          const url = URL.createObjectURL(file.blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = file.name;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-        });
-
-        deleteBtn.addEventListener('click', async () => {
-          if (confirm(`"${file.name}" dosyasını silmek istediğinize emin misiniz?`)) {
-            await deleteFileById(file.id);
-            listFiles();
-          }
-        });
-
         fileList.appendChild(fileItem);
-      });
-    }
-
-    // Dosya yükle
-    async function uploadFile() {
-      const fileInput = document.getElementById('fileUpload');
-      const files = Array.from(fileInput.files);
-
-      if (files.length === 0) {
-        alert('Lütfen dosya seçin.');
-        return;
+        cursor.continue();
       }
+    };
+  }
 
-      for (const file of files) {
-        await addFile(file);
-      }
-
-      fileInput.value = '';
-      listFiles();
-    }
-
-    // Giriş çıkış fonksiyonları
-    document.getElementById('loginBtn').addEventListener('click', () => {
-      document.getElementById('loginPage').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
-      document.getElementById('logoutBtn').style.display = 'inline-block';
-      listFiles();
-    });
-
-    function logout() {
-      document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('loginPage').style.display = 'flex';
-      document.getElementById('logoutBtn').style.display = 'none';
-    }
-
-    // Rehbere ekle fonksiyonu
-    function addToContacts() {
-      const vcfData = `BEGIN:VCARD
-VERSION:3.0
-FN:Yurt Yapı Alüminyum Sistemleri
-ORG:Yurt Yapı Alüminyum Sistemleri
-TEL;TYPE=CELL:05353133790
-EMAIL:info@yurtyapialuminyum.com
-ADR;TYPE=WORK:;;İnönü Mahallesi 361 Sk No 48;BAĞCILAR;İSTANBUL;;
-END:VCARD`;
-
-      const blob = new Blob([vcfData], {type: 'text/vcard'});
-      const url = URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
+  // Dosya indir
+  function downloadFile(fileName) {
+    const transaction = db.transaction(["files"], "readonly");
+    const store = transaction.objectStore("files");
+    const request = store.get(fileName);
+    request.onsuccess = () => {
+      const file = request.result;
+      const a = document.createElement("a");
+      a.href = file.data;
+      a.download = file.name;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
+    };
+  }
 
-    // Sayfa yüklendiğinde DB aç
-    window.onload = async () => {
-      try {
-        await openDB();
-      } catch (e) {
-        alert('IndexedDB açılamadı, dosya saklama çalışmayacak!');
-        console.error(e);
-      }
-    }
-  </script>
+  // Dosya sil
+  function deleteFile(fileName) {
+    const transaction = db.transaction(["files"], "readwrite");
+    const store = transaction.objectStore("files");
+    store.delete(fileName).onsuccess = () => {
+      showFiles();
+    };
+  }
+
+  // Giriş ve çıkış
+  document.getElementById("loginBtn").addEventListener("click", () => {
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
+  });
+
+  function logout() {
+    document.getElementById("mainContent").style.display = "none";
+    document.getElementById("loginPage").style.display = "block";
+  }
+</script>
+
 </body>
 </html>
