@@ -65,6 +65,7 @@
       font-weight: bold;
       user-select: none;
       transition: background-color 0.3s ease;
+      position: relative;
     }
 
     .login-btn:hover {
@@ -167,6 +168,7 @@
       cursor: pointer;
       width: 100%;
       font-weight: bold;
+      position: relative;
     }
 
     .add-contact-btn {
@@ -181,12 +183,39 @@
       font-weight: bold;
       cursor: pointer;
       user-select: none;
+      position: relative;
     }
 
     footer {
       border-top: 1px solid #ccc;
       margin-top: 40px;
       padding: 20px 0;
+    }
+
+    .loading-text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: inherit;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-size: 0.7em;
+    }
+
+    .action-btn .loading-text,
+    .add-contact-btn .loading-text {
+      font-size: 1em;
+    }
+
+    .loading .loading-text {
+      opacity: 1;
     }
   </style>
 </head>
@@ -196,7 +225,10 @@
   <div id="loginPage" class="login-container">
     <div class="login-title-box">Yurt Yapı</div>
     <div class="login-box">
-      <button id="loginBtn" class="login-btn">GİRİŞ</button>
+      <button id="loginBtn" class="login-btn">
+        GİRİŞ
+        <span class="loading-text">Loading...</span>
+      </button>
     </div>
   </div>
 
@@ -215,13 +247,19 @@
         <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
         <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
       </div>
-      <button class="add-contact-btn" onclick="addToContacts()">REHBERE EKLE</button>
+      <button class="add-contact-btn" onclick="addToContacts()">
+        REHBERE EKLE
+        <span class="loading-text">Loading...</span>
+      </button>
     </div>
 
     <div class="section files-section">
       <h2 class="section-title">Dosya Yönetimi</h2>
       <div class="file-upload">
-        <button class="action-btn" onclick="window.open('https://onedrive.live.com/?id=root&cid=0F879C251BA36041', '_blank')">DOSYA YÜKLE</button>
+        <button class="action-btn" onclick="openFileUpload()">
+          DOSYA YÜKLE
+          <span class="loading-text">Loading...</span>
+        </button>
       </div>
     </div>
   </div>
@@ -230,9 +268,15 @@
 
   <script>
     document.getElementById('loginBtn').addEventListener('click', function () {
-      document.getElementById('loginPage').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
-      document.getElementById('logoutBtn').style.display = 'inline-block';
+      const btn = this;
+      btn.classList.add('loading');
+      
+      setTimeout(() => {
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        document.getElementById('logoutBtn').style.display = 'inline-block';
+        btn.classList.remove('loading');
+      }, 1000);
     });
 
     function logout() {
@@ -242,8 +286,12 @@
     }
 
     function addToContacts() {
-      // VCF format oluştur ve indirme işlemi başlat
-      const vcfData = `BEGIN:VCARD
+      const btn = event.target.closest('button');
+      btn.classList.add('loading');
+      
+      setTimeout(() => {
+        // VCF format oluştur ve indirme işlemi başlat
+        const vcfData = `BEGIN:VCARD
 VERSION:3.0
 FN:Yurt Yapı Alüminyum Sistemleri
 ORG:Yurt Yapı Alüminyum Sistemleri
@@ -252,16 +300,29 @@ EMAIL:info@yurtyapialuminyum.com
 ADR;TYPE=WORK:;;İnönü Mahallesi 361 Sk No 48;BAĞCILAR;İSTANBUL;;
 END:VCARD`;
 
-      const blob = new Blob([vcfData], {type: 'text/vcard'});
-      const url = URL.createObjectURL(blob);
+        const blob = new Blob([vcfData], {type: 'text/vcard'});
+        const url = URL.createObjectURL(blob);
 
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        btn.classList.remove('loading');
+      }, 1000);
+    }
+
+    function openFileUpload() {
+      const btn = event.target.closest('button');
+      btn.classList.add('loading');
+      
+      setTimeout(() => {
+        window.open('https://onedrive.live.com/?id=root&cid=0F879C251BA36041', '_blank');
+        btn.classList.remove('loading');
+      }, 1000);
     }
   </script>
 </body>
