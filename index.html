@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Yurt Yapı Giriş</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
@@ -14,6 +17,7 @@
       color: #2c3e50;
       height: 100vh;
     }
+
     .container {
       max-width: 600px;
       margin: 40px auto;
@@ -23,6 +27,7 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
       position: relative;
     }
+
     .login-container {
       display: flex;
       justify-content: center;
@@ -32,6 +37,7 @@
       text-align: center;
       gap: 20px;
     }
+
     .login-title-box {
       background-color: white;
       padding: 15px 25px;
@@ -43,7 +49,7 @@
       font-weight: bold;
       color: #2c3e50;
     }
-    .login-box { user-select: none; }
+
     .login-btn {
       background-color: #2980b9;
       color: white;
@@ -56,10 +62,11 @@
       user-select: none;
       transition: background-color 0.3s ease;
     }
+
     .login-btn:hover {
       background-color: #2471a3;
-      text-decoration: none;
     }
+
     .main-title-box {
       background-color: white;
       padding: 15px 30px;
@@ -70,72 +77,157 @@
       font-weight: bold;
       text-align: center;
       color: #2c3e50;
+      user-select: none;
     }
+
+    .logout-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      font-size: 1.2em;
+      padding: 5px 10px;
+      background-color: transparent;
+      color: #2c3e50;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      z-index: 1000;
+    }
+
+    .logout-btn:hover {
+      color: #e74c3c;
+    }
+
+    .section {
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
     .files-section {
       background-color: #eafaf1;
       border-left: 5px solid #27ae60;
-      padding: 20px;
-      border-radius: 8px;
-      margin-top: 20px;
     }
-    .uploaded-files {
-      margin-top: 10px;
+
+    .section-title {
+      margin-bottom: 15px;
+      font-size: 1.3em;
+      font-weight: bold;
+      text-align: center;
+      color: #2c3e50;
     }
-    .file-item {
-      background-color: #fff;
-      padding: 10px;
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
+
+    .file-upload {
+      padding: 15px;
+      border: 2px dashed #bdc3c7;
       border-radius: 6px;
+      text-align: center;
+      background-color: #ffffff;
+    }
+
+    .uploaded-files {
+      margin-top: 20px;
+      font-size: 0.9em;
+    }
+
+    .file-item {
+      background-color: #fdfdfd;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .file-item button {
-      margin-left: 10px;
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
+
+    .file-actions {
+      display: flex;
+      gap: 10px;
     }
-    .file-item button.delete {
+
+    .file-actions button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+
+    .download-btn {
+      background-color: #27ae60;
+      color: white;
+    }
+
+    .delete-btn {
       background-color: #e74c3c;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="main-title-box">YURT YAPI ALEMİNYUM SİSTEMLERİ</div>
-    <button class="login-btn" onclick="window.open('https://gofile.io/d/fe7293d7-b871-4970-a9e1-c62fc59d5b02', '_blank')">Dosya Seç (Gofile)</button>
-    
-    <div class="files-section">
-      <div class="section-title">İndirilen Dosyalar</div>
-      <button class="login-btn" onclick="simulateDownload()">Dosyayı İndir (Simülasyon)</button>
-      <div class="uploaded-files" id="fileList"></div>
+
+<!-- Giriş Sayfası -->
+<div id="loginPage" class="login-container">
+  <div class="login-title-box">Yurt Yapı</div>
+  <button id="loginBtn" class="login-btn">GİRİŞ</button>
+</div>
+
+<!-- Ana Sayfa -->
+<div id="mainContent" class="container" style="display:none;">
+  <button class="logout-btn" onclick="logout()">X</button>
+  <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
+
+  <div class="section files-section">
+    <h2 class="section-title">Dosya Yönetimi</h2>
+
+    <div class="file-upload">
+      <h3>Dosya Seç ve İndir</h3>
+      <a href="https://gofile.io/d/fe7293d7-b871-4970-a9e1-c62fc59d5b02" target="_blank" class="login-btn" style="background:#27ae60;">Dosya Seç (Gofile)</a>
+      <br><br>
+      <button class="login-btn" onclick="addFile()">İndirilen Dosyayı Siteye Ekle</button>
+    </div>
+
+    <div class="uploaded-files">
+      <h3>Yüklenen Dosyalar</h3>
+      <div id="fileList"></div>
     </div>
   </div>
+</div>
 
-  <script>
-    function simulateDownload() {
-      // Burada örnek bir dosya simüle ediliyor
-      const fileName = "ornek_dosya.pdf";
-      const fileUrl = "#"; // Gerçek bir URL olsaydı bu kısım aktif olurdu
+<script>
+  document.getElementById('loginBtn').addEventListener('click', function () {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+  });
 
-      const fileItem = document.createElement("div");
-      fileItem.className = "file-item";
-      fileItem.innerHTML = `
-        <span>${fileName}</span>
-        <div>
-          <a href="${fileUrl}" download="${fileName}">
-            <button>İndir</button>
-          </a>
-          <button class="delete" onclick="this.closest('.file-item').remove()">Sil</button>
-        </div>
-      `;
-      document.getElementById("fileList").appendChild(fileItem);
-    }
-  </script>
+  function logout() {
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+  }
+
+  function addFile() {
+    const filename = prompt("Lütfen indirdiğiniz dosyanın adını (uzantısıyla) yazınız:");
+    if (!filename) return;
+
+    const fileList = document.getElementById('fileList');
+
+    const fileItem = document.createElement('div');
+    fileItem.className = 'file-item';
+
+    fileItem.innerHTML = `
+      <span>${filename}</span>
+      <div class="file-actions">
+        <button class="download-btn" onclick="alert('Bu dosyayı manuel indirdiniz.')">İndir</button>
+        <button class="delete-btn" onclick="this.closest('.file-item').remove();">Sil</button>
+      </div>
+    `;
+
+    fileList.appendChild(fileItem);
+  }
+</script>
+
 </body>
 </html>
