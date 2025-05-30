@@ -65,6 +65,8 @@
       font-weight: bold;
       user-select: none;
       transition: background-color 0.3s ease;
+      position: relative;
+      min-width: 120px;
     }
 
     .login-btn:hover {
@@ -167,6 +169,8 @@
       cursor: pointer;
       width: 100%;
       font-weight: bold;
+      position: relative;
+      min-width: 120px;
     }
 
     .add-contact-btn {
@@ -181,12 +185,26 @@
       font-weight: bold;
       cursor: pointer;
       user-select: none;
+      position: relative;
+      min-width: 120px;
     }
 
     footer {
       border-top: 1px solid #ccc;
       margin-top: 40px;
       padding: 20px 0;
+    }
+
+    /* Loading yazısı için */
+    .loading-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: bold;
+      color: white;
+      font-size: 1em;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -215,13 +233,13 @@
         <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
         <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
       </div>
-      <button class="add-contact-btn" onclick="addToContacts()">REHBERE EKLE</button>
+      <button class="add-contact-btn" onclick="handleAddToContacts(this)">REHBERE EKLE</button>
     </div>
 
     <div class="section files-section">
       <h2 class="section-title">Dosya Yönetimi</h2>
       <div class="file-upload">
-        <button class="action-btn" onclick="window.open('https://onedrive.live.com/?id=root&cid=0F879C251BA36041', '_blank')">DOSYA YÜKLE</button>
+        <button class="action-btn" onclick="handleFileUpload(this)">DOSYA YÜKLE</button>
       </div>
     </div>
   </div>
@@ -229,10 +247,27 @@
   <footer></footer>
 
   <script>
+    // Ortak loading göstergesi fonksiyonu
+    function showLoading(button) {
+      const originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = 'LOADING...';
+
+      return function restore() {
+        button.disabled = false;
+        button.textContent = originalText;
+      }
+    }
+
     document.getElementById('loginBtn').addEventListener('click', function () {
-      document.getElementById('loginPage').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
-      document.getElementById('logoutBtn').style.display = 'inline-block';
+      const restore = showLoading(this);
+
+      setTimeout(() => {
+        restore();
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        document.getElementById('logoutBtn').style.display = 'inline-block';
+      }, 1000); // 1 saniye loading göster, sonra geçiş yap
     });
 
     function logout() {
@@ -241,9 +276,23 @@
       document.getElementById('logoutBtn').style.display = 'none';
     }
 
-    function addToContacts() {
-      // VCF format oluştur ve indirme işlemi başlat
-      const vcfData = `BEGIN:VCARD
+    function handleFileUpload(button) {
+      const restore = showLoading(button);
+
+      setTimeout(() => {
+        restore();
+        window.open('https://gofile.io/d/ad7ffd63-726e-4832-b3ef-4c518bb090bf', '_blank');
+      }, 1000);
+    }
+
+    function handleAddToContacts(button) {
+      const restore = showLoading(button);
+
+      setTimeout(() => {
+        restore();
+
+        // VCF format oluştur ve indirme işlemi başlat
+        const vcfData = `BEGIN:VCARD
 VERSION:3.0
 FN:Yurt Yapı Alüminyum Sistemleri
 ORG:Yurt Yapı Alüminyum Sistemleri
@@ -252,16 +301,17 @@ EMAIL:info@yurtyapialuminyum.com
 ADR;TYPE=WORK:;;İnönü Mahallesi 361 Sk No 48;BAĞCILAR;İSTANBUL;;
 END:VCARD`;
 
-      const blob = new Blob([vcfData], {type: 'text/vcard'});
-      const url = URL.createObjectURL(blob);
+        const blob = new Blob([vcfData], {type: 'text/vcard'});
+        const url = URL.createObjectURL(blob);
 
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 1000);
     }
   </script>
 </body>
