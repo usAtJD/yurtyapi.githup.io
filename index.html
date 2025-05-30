@@ -5,314 +5,299 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Yurt Yapı Giriş</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f6f7;
-      color: #2c3e50;
-      height: 100vh;
+      background-color: #f5f5f5;
     }
-
+    
     .container {
-      max-width: 600px;
-      margin: 40px auto;
+      max-width: 1200px;
+      margin: 0 auto;
       padding: 20px;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      position: relative;
     }
-
-    .login-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      height: 100vh;
-      text-align: center;
-      gap: 20px;
-    }
-
-    .login-title-box {
-      background-color: white;
-      padding: 15px 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      min-width: 250px;
-      user-select: none;
-      font-size: 2em;
-      font-weight: bold;
-      color: #2c3e50;
-    }
-
-    .login-box {
-      user-select: none;
-    }
-
-    .login-btn {
-      background-color: #2980b9;
-      color: white;
-      border-radius: 8px;
-      padding: 10px 20px;
-      border: none;
-      cursor: pointer;
-      font-size: 1.3em;
-      font-weight: bold;
-      user-select: none;
-      transition: background-color 0.3s ease;
-      position: relative;
-      min-width: 120px;
-    }
-
-    .login-btn:hover {
-      background-color: #2471a3;
-      text-decoration: none;
-    }
-
-    .main-title-box {
-      background-color: white;
-      padding: 15px 30px;
-      margin-bottom: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      font-size: 1.6em;
-      font-weight: bold;
-      text-align: center;
-      color: #2c3e50;
-      display: inline-block;
-      vertical-align: middle;
-      user-select: none;
-    }
-
-    .logout-btn {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      font-size: 1.2em;
-      padding: 5px 10px;
-      background-color: transparent;
-      color: #2c3e50;
-      border: none;
-      cursor: pointer;
-      user-select: none;
-      font-weight: bold;
-      transition: color 0.3s ease;
-      z-index: 1000;
-      line-height: 1;
-    }
-    .logout-btn:hover {
-      color: #e74c3c;
-    }
-
+    
     .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      text-align: center;
       margin-bottom: 30px;
-      position: relative;
     }
-
-    .section {
+    
+    .main-title-box {
+      background-color: #2c3e50;
+      color: white;
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 5px;
+      font-size: 24px;
+      font-weight: bold;
+      display: inline-block;
+    }
+    
+    .section {
+      background-color: white;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .section-title {
+      color: #2c3e50;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+    
+    .file-upload {
       margin-bottom: 20px;
     }
-
-    .contact-info {
-      background-color: #eaf2f8;
-      border-left: 5px solid #2980b9;
-    }
-
-    .files-section {
-      background-color: #eafaf1;
-      border-left: 5px solid #27ae60;
-    }
-
-    .section-title {
-      margin-bottom: 15px;
-      font-size: 1.3em;
-      font-weight: bold;
-      text-align: center;
-      color: #2c3e50;
-    }
-
-    .contact-details {
-      font-size: 0.95em;
-    }
-
-    .contact-details div {
-      margin: 6px 0;
-    }
-
-    .file-upload {
-      padding: 15px;
-      border: 2px dashed #bdc3c7;
-      border-radius: 6px;
-      text-align: center;
-      background-color: #ffffff;
-    }
-
+    
     .action-btn {
-      margin-top: 10px;
-      padding: 10px;
-      background-color: #2980b9;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 0.95em;
-      cursor: pointer;
-      width: 100%;
-      font-weight: bold;
-      position: relative;
-      min-width: 120px;
-    }
-
-    .add-contact-btn {
-      margin-top: 15px;
-      width: 100%;
-      padding: 10px;
       background-color: #3498db;
       color: white;
       border: none;
+      padding: 10px 15px;
       border-radius: 5px;
-      font-size: 0.95em;
-      font-weight: bold;
       cursor: pointer;
-      user-select: none;
-      position: relative;
-      min-width: 120px;
-    }
-
-    footer {
-      border-top: 1px solid #ccc;
-      margin-top: 40px;
-      padding: 20px 0;
-    }
-
-    /* Loading yazısı için */
-    .loading-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       font-weight: bold;
+      margin-top: 10px;
+    }
+    
+    .action-btn:hover {
+      background-color: #2980b9;
+    }
+    
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .file-actions button {
+      margin-left: 10px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    
+    .download-btn {
+      background-color: #2ecc71;
       color: white;
-      font-size: 1em;
-      pointer-events: none;
+    }
+    
+    .download-btn:hover {
+      background-color: #27ae60;
+    }
+    
+    .delete-btn {
+      background-color: #e74c3c;
+      color: white;
+    }
+    
+    .delete-btn:hover {
+      background-color: #c0392b;
+    }
+    
+    .logout-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: bold;
+      float: right;
+    }
+    
+    .logout-btn:hover {
+      background-color: #c0392b;
+    }
+    
+    #loginPage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #2c3e50;
+    }
+    
+    .login-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 300px;
+    }
+    
+    .login-box h2 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+    
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
+    
+    .login-btn {
+      background-color: #2c3e50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 3px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+    }
+    
+    .login-btn:hover {
+      background-color: #1a252f;
     }
   </style>
 </head>
 <body>
 
-  <!-- Giriş Sayfası -->
-  <div id="loginPage" class="login-container">
-    <div class="login-title-box">Yurt Yapı</div>
+  <div id="loginPage" class="container">
     <div class="login-box">
-      <button id="loginBtn" class="login-btn">GİRİŞ</button>
+      <h2>Giriş Yap</h2>
+      <input type="text" placeholder="Kullanıcı Adı" id="username">
+      <input type="password" placeholder="Şifre" id="password">
+      <button class="login-btn" id="loginBtn">Giriş Yap</button>
     </div>
   </div>
 
-  <!-- Ana İçerik -->
   <div id="mainContent" class="container" style="display:none;">
     <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:inline-block;">X</button>
     <div class="header-container">
       <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
     </div>
 
-    <div class="section contact-info">
-      <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
-      <div class="contact-details">
-        <div><strong>Kurucu:</strong> İsmail Yeşilyurt</div>
-        <div><strong>Tel:</strong> 0535 313 37 90</div>
-        <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
-        <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
-      </div>
-      <button class="add-contact-btn" onclick="handleAddToContacts(this)">REHBERE EKLE</button>
-    </div>
-
     <div class="section files-section">
       <h2 class="section-title">Dosya Yönetimi</h2>
       <div class="file-upload">
-        <button class="action-btn" onclick="handleFileUpload(this)">DOSYA YÜKLE</button>
+        <h3>Dosya Yükle</h3>
+        <input type="file" id="fileUpload" name="fileUpload" multiple>
+        <button class="action-btn" onclick="uploadFile()">Yükle</button>
+      </div>
+
+      <div class="uploaded-files">
+        <h3>Yüklenen Dosyalar</h3>
+        <div id="fileList"></div>
       </div>
     </div>
   </div>
 
-  <footer></footer>
+<script>
+  // LocalStorage anahtarı
+  const STORAGE_KEY = 'yurtYapiFiles';
 
-  <script>
-    // Ortak loading göstergesi fonksiyonu
-    function showLoading(button) {
-      const originalText = button.textContent;
-      button.disabled = true;
-      button.textContent = 'LOADING...';
+  // Sayfa yüklendiğinde dosyaları göster
+  document.addEventListener('DOMContentLoaded', () => {
+    loadFilesFromStorage();
+  });
 
-      return function restore() {
-        button.disabled = false;
-        button.textContent = originalText;
-      }
-    }
+  document.getElementById('loginBtn').addEventListener('click', function () {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('logoutBtn').style.display = 'inline-block';
+  });
 
-    document.getElementById('loginBtn').addEventListener('click', function () {
-      const restore = showLoading(this);
+  function logout() {
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('logoutBtn').style.display = 'none';
+  }
 
-      setTimeout(() => {
-        restore();
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
-        document.getElementById('logoutBtn').style.display = 'inline-block';
-      }, 1000); // 1 saniye loading göster, sonra geçiş yap
+  // Dosya yükleme fonksiyonu
+  function uploadFile() {
+    const fileInput = document.getElementById('fileUpload');
+    const files = fileInput.files;
+    if (!files.length) return;
+
+    // LocalStorage'daki dosyaları al
+    let savedFiles = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    // Her dosya için base64 yap ve kaydet
+    Array.from(files).forEach(file => {
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const fileData = e.target.result; // base64 data URL
+        // Dosya bilgilerini kaydet
+        savedFiles.push({
+          name: file.name,
+          type: file.type,
+          data: fileData
+        });
+        // LocalStorage'a kaydet
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedFiles));
+        // Dosya listesini güncelle
+        addFileToDOM(file.name, fileData);
+      };
+
+      reader.readAsDataURL(file);
     });
 
-    function logout() {
-      document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('loginPage').style.display = 'flex';
-      document.getElementById('logoutBtn').style.display = 'none';
-    }
+    // Inputu temizle
+    fileInput.value = '';
+  }
 
-    function handleFileUpload(button) {
-      const restore = showLoading(button);
+  // LocalStorage'dan dosyaları yükle ve DOM'a ekle
+  function loadFilesFromStorage() {
+    const savedFiles = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    savedFiles.forEach(file => {
+      addFileToDOM(file.name, file.data);
+    });
+  }
 
-      setTimeout(() => {
-        restore();
-        window.open('https://gofile.io/d/ad7ffd63-726e-4832-b3ef-4c518bb090bf', '_blank');
-      }, 1000);
-    }
+  // DOM'a dosya öğesi ekle
+  function addFileToDOM(name, dataUrl) {
+    const fileList = document.getElementById('fileList');
 
-    function handleAddToContacts(button) {
-      const restore = showLoading(button);
+    const fileItem = document.createElement('div');
+    fileItem.className = 'file-item';
 
-      setTimeout(() => {
-        restore();
+    fileItem.innerHTML = `
+      <span>${name}</span>
+      <div class="file-actions">
+        <button class="download-btn">İndir</button>
+        <button class="delete-btn">Sil</button>
+      </div>
+    `;
 
-        // VCF format oluştur ve indirme işlemi başlat
-        const vcfData = `BEGIN:VCARD
-VERSION:3.0
-FN:Yurt Yapı Alüminyum Sistemleri
-ORG:Yurt Yapı Alüminyum Sistemleri
-TEL;TYPE=CELL:05353133790
-EMAIL:info@yurtyapialuminyum.com
-ADR;TYPE=WORK:;;İnönü Mahallesi 361 Sk No 48;BAĞCILAR;İSTANBUL;;
-END:VCARD`;
+    // İndir butonu
+    fileItem.querySelector('.download-btn').addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
 
-        const blob = new Blob([vcfData], {type: 'text/vcard'});
-        const url = URL.createObjectURL(blob);
+    // Sil butonu
+    fileItem.querySelector('.delete-btn').addEventListener('click', () => {
+      fileItem.remove();
+      removeFileFromStorage(name);
+    });
 
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 1000);
-    }
-  </script>
+    fileList.appendChild(fileItem);
+  }
+
+  // LocalStorage'dan dosyayı sil
+  function removeFileFromStorage(fileName) {
+    let savedFiles = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    savedFiles = savedFiles.filter(f => f.name !== fileName);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedFiles));
+  }
+</script>
 </body>
 </html>
