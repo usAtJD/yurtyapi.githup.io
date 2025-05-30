@@ -50,6 +50,10 @@
       color: #2c3e50;
     }
 
+    .login-box {
+      user-select: none;
+    }
+
     .login-btn {
       background-color: #2980b9;
       color: white;
@@ -65,6 +69,7 @@
 
     .login-btn:hover {
       background-color: #2471a3;
+      text-decoration: none;
     }
 
     .main-title-box {
@@ -77,6 +82,8 @@
       font-weight: bold;
       text-align: center;
       color: #2c3e50;
+      display: inline-block;
+      vertical-align: middle;
       user-select: none;
     }
 
@@ -90,19 +97,34 @@
       color: #2c3e50;
       border: none;
       cursor: pointer;
+      user-select: none;
       font-weight: bold;
       transition: color 0.3s ease;
       z-index: 1000;
+      line-height: 1;
     }
-
     .logout-btn:hover {
       color: #e74c3c;
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      position: relative;
     }
 
     .section {
       padding: 20px;
       border-radius: 8px;
       margin-bottom: 20px;
+    }
+
+    .contact-info {
+      background-color: #eaf2f8;
+      border-left: 5px solid #2980b9;
     }
 
     .files-section {
@@ -118,6 +140,14 @@
       color: #2c3e50;
     }
 
+    .contact-details {
+      font-size: 0.95em;
+    }
+
+    .contact-details div {
+      margin: 6px 0;
+    }
+
     .file-upload {
       padding: 15px;
       border: 2px dashed #bdc3c7;
@@ -126,108 +156,118 @@
       background-color: #ffffff;
     }
 
-    .uploaded-files {
-      margin-top: 20px;
-      font-size: 0.9em;
+    .file-upload input {
+      margin-top: 10px;
+      width: 100%;
     }
 
-    .file-item {
-      background-color: #fdfdfd;
+    .action-btn {
+      margin-top: 10px;
       padding: 10px;
-      margin: 8px 0;
-      border-radius: 5px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .file-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .file-actions button {
-      padding: 8px 12px;
+      background-color: #2980b9;
+      color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 5px;
+      font-size: 0.95em;
+      cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+    }
+
+    .add-contact-btn {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.95em;
       font-weight: bold;
       cursor: pointer;
-      font-size: 0.9em;
+      user-select: none;
     }
 
-    .download-btn {
-      background-color: #27ae60;
-      color: white;
-    }
-
-    .delete-btn {
-      background-color: #e74c3c;
-      color: white;
+    footer {
+      border-top: 1px solid #ccc;
+      margin-top: 40px;
+      padding: 20px 0;
     }
   </style>
 </head>
 <body>
 
-<!-- Giriş Sayfası -->
-<div id="loginPage" class="login-container">
-  <div class="login-title-box">Yurt Yapı</div>
-  <button id="loginBtn" class="login-btn">GİRİŞ</button>
-</div>
-
-<!-- Ana Sayfa -->
-<div id="mainContent" class="container" style="display:none;">
-  <button class="logout-btn" onclick="logout()">X</button>
-  <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
-
-  <div class="section files-section">
-    <h2 class="section-title">Dosya Yönetimi</h2>
-
-    <div class="file-upload">
-      <h3>Dosya Seç ve İndir</h3>
-      <a href="https://gofile.io/d/fe7293d7-b871-4970-a9e1-c62fc59d5b02" target="_blank" class="login-btn" style="background:#27ae60;">Dosya Seç (Gofile)</a>
-      <br><br>
-      <button class="login-btn" onclick="addFile()">İndirilen Dosyayı Siteye Ekle</button>
-    </div>
-
-    <div class="uploaded-files">
-      <h3>Yüklenen Dosyalar</h3>
-      <div id="fileList"></div>
+  <!-- Giriş Sayfası -->
+  <div id="loginPage" class="login-container">
+    <div class="login-title-box">Yurt Yapı</div>
+    <div class="login-box">
+      <button id="loginBtn" class="login-btn">GİRİŞ</button>
     </div>
   </div>
-</div>
 
-<script>
-  document.getElementById('loginBtn').addEventListener('click', function () {
-    document.getElementById('loginPage').style.display = 'none';
-    document.getElementById('mainContent').style.display = 'block';
-  });
+  <!-- Ana İçerik -->
+  <div id="mainContent" class="container" style="display:none;">
+    <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:inline-block;">X</button>
+    <div class="header-container">
+      <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
+    </div>
 
-  function logout() {
-    document.getElementById('mainContent').style.display = 'none';
-    document.getElementById('loginPage').style.display = 'flex';
-  }
-
-  function addFile() {
-    const filename = prompt("Lütfen indirdiğiniz dosyanın adını (uzantısıyla) yazınız:");
-    if (!filename) return;
-
-    const fileList = document.getElementById('fileList');
-
-    const fileItem = document.createElement('div');
-    fileItem.className = 'file-item';
-
-    fileItem.innerHTML = `
-      <span>${filename}</span>
-      <div class="file-actions">
-        <button class="download-btn" onclick="alert('Bu dosyayı manuel indirdiniz.')">İndir</button>
-        <button class="delete-btn" onclick="this.closest('.file-item').remove();">Sil</button>
+    <div class="section contact-info">
+      <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
+      <div class="contact-details">
+        <div><strong>Kurucu:</strong> İsmail Yeşilyurt</div>
+        <div><strong>Tel:</strong> 0535 313 37 90</div>
+        <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
+        <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
       </div>
-    `;
+      <button class="add-contact-btn" onclick="addToContacts()">REHBERE EKLE</button>
+    </div>
 
-    fileList.appendChild(fileItem);
-  }
-</script>
+    <div class="section files-section">
+      <h2 class="section-title">Dosya Yönetimi</h2>
+      <div class="file-upload">
+        <button class="action-btn" onclick="window.open('https://gofile.io/d/fe7293d7-b871-4970-a9e1-c62fc59d5b02', '_blank')">DOSYA YÜKLE</button>
+      </div>
+    </div>
+  </div>
 
+  <footer></footer>
+
+  <script>
+    document.getElementById('loginBtn').addEventListener('click', function () {
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+      document.getElementById('logoutBtn').style.display = 'inline-block';
+    });
+
+    function logout() {
+      document.getElementById('mainContent').style.display = 'none';
+      document.getElementById('loginPage').style.display = 'flex';
+      document.getElementById('logoutBtn').style.display = 'none';
+    }
+
+    function addToContacts() {
+      // VCF format oluştur ve indirme işlemi başlat
+      const vcfData = `BEGIN:VCARD
+VERSION:3.0
+FN:Yurt Yapı Alüminyum Sistemleri
+ORG:Yurt Yapı Alüminyum Sistemleri
+TEL;TYPE=CELL:05353133790
+EMAIL:info@yurtyapialuminyum.com
+ADR;TYPE=WORK:;;İnönü Mahallesi 361 Sk No 48;BAĞCILAR;İSTANBUL;;
+END:VCARD`;
+
+      const blob = new Blob([vcfData], {type: 'text/vcard'});
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
 </body>
 </html>
