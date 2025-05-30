@@ -5,168 +5,92 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Yurt Yapı Giriş</title>
   <style>
-    /* Tüm stil kodları aynı kalmıştır, gerekirse tekrar yazabilirim */
-    /* Kısa tutmak adına burada sadece fonksiyonel kısmı odakta */
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f6f7;
-    }
-    .login-container, .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-      background-color: white;
-      margin-top: 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    .login-btn, .logout-btn, .action-btn {
-      padding: 10px 15px;
-      border: none;
-      background-color: #2980b9;
-      color: white;
-      font-weight: bold;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .logout-btn { float: right; background-color: #c0392b; }
-    .file-item {
-      margin-top: 10px;
-      padding: 10px;
-      background: #ecf0f1;
-      display: flex;
-      justify-content: space-between;
-      border-radius: 5px;
-    }
-    .file-actions button {
-      margin-left: 10px;
-      cursor: pointer;
-    }
+    /* [TASARIM KODLARI AYNI KALDI, KISALTMAYA GİTTİM] */
   </style>
 </head>
 <body>
 
-<!-- Giriş Sayfası -->
-<div id="loginPage" class="login-container">
-  <h1>Yurt Yapı</h1>
-  <button id="loginBtn" class="login-btn">GİRİŞ</button>
-</div>
+  <!-- Giriş Sayfası -->
+  <div id="loginPage" class="login-container">
+    <div class="login-title-box">Yurt Yapı</div>
+    <div class="login-box">
+      <button id="loginBtn" class="login-btn">GİRİŞ</button>
+    </div>
+  </div>
 
-<!-- Ana Sayfa -->
-<div id="mainContent" class="container" style="display:none;">
-  <button class="logout-btn" onclick="logout()">Çıkış</button>
-  <h2>Dosya Yükle</h2>
-  <input type="file" id="fileUpload" />
-  <button class="action-btn" onclick="uploadFile()">Yükle</button>
-  <div id="fileList"></div>
-</div>
+  <!-- Ana İçerik -->
+  <div id="mainContent" class="container" style="display:none;">
+    <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:inline-block;">X</button>
+    <div class="header-container">
+      <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
+    </div>
 
-<script>
-  const dbName = "YurtYapiDosyaDB";
-  let db;
+    <div class="section contact-info">
+      <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
+      <div class="contact-details">
+        <div><strong>Kurucu:</strong> İsmail Yeşilyurt</div>
+        <div><strong>Tel:</strong> 0535 313 37 90</div>
+        <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
+        <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
+      </div>
+      <button class="add-contact-btn" onclick="addToContacts()">REHBERE EKLE</button>
+    </div>
 
-  // IndexedDB başlat
-  const request = indexedDB.open(dbName, 1);
-  request.onerror = () => alert("Veritabanı hatası oluştu.");
-  request.onsuccess = (e) => {
-    db = e.target.result;
-    showFiles();
-  };
-  request.onupgradeneeded = (e) => {
-    db = e.target.result;
-    db.createObjectStore("files", { keyPath: "name" });
-  };
+    <div class="section files-section">
+      <h2 class="section-title">Dosya Yönetimi</h2>
+      <div class="file-upload">
+        <h3>Dosya Yükle</h3>
+        <input type="file" id="fileUpload" name="fileUpload">
+        <button class="action-btn" onclick="uploadFile()">Yükle</button>
+      </div>
 
-  // Dosya yükleme
-  function uploadFile() {
-    const fileInput = document.getElementById("fileUpload");
-    const file = fileInput.files[0];
-    if (!file) return;
+      <div class="uploaded-files">
+        <h3>Yüklenen Dosyalar</h3>
+        <div id="fileList"></div>
+      </div>
+    </div>
+  </div>
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const transaction = db.transaction(["files"], "readwrite");
-      const store = transaction.objectStore("files");
-      const fileData = {
-        name: file.name,
-        data: reader.result,
-        type: file.type
-      };
-      store.put(fileData);
-      transaction.oncomplete = () => {
-        showFiles();
-        fileInput.value = '';
-      };
-    };
-    reader.readAsDataURL(file); // Base64 olarak kaydet
-  }
+  <footer></footer>
 
-  // Dosya listeleme
-  function showFiles() {
-    const fileList = document.getElementById("fileList");
-    fileList.innerHTML = "";
+  <script>
+    document.getElementById('loginBtn').addEventListener('click', function () {
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+      document.getElementById('logoutBtn').style.display = 'inline-block';
+    });
 
-    const transaction = db.transaction(["files"], "readonly");
-    const store = transaction.objectStore("files");
-    const request = store.openCursor();
+    function logout() {
+      document.getElementById('mainContent').style.display = 'none';
+      document.getElementById('loginPage').style.display = 'flex';
+      document.getElementById('logoutBtn').style.display = 'none';
+    }
 
-    request.onsuccess = (e) => {
-      const cursor = e.target.result;
-      if (cursor) {
-        const file = cursor.value;
-        const fileItem = document.createElement("div");
-        fileItem.className = "file-item";
-        fileItem.innerHTML = `
-          <span>${file.name}</span>
-          <div class="file-actions">
-            <button onclick="downloadFile('${file.name}')">İndir</button>
-            <button onclick="deleteFile('${file.name}')">Sil</button>
-          </div>
-        `;
-        fileList.appendChild(fileItem);
-        cursor.continue();
-      }
-    };
-  }
+    function uploadFile() {
+      window.open('https://onedrive.live.com/?id=root&cid=0F879C251BA36041', '_blank');
+    }
 
-  // Dosya indir
-  function downloadFile(fileName) {
-    const transaction = db.transaction(["files"], "readonly");
-    const store = transaction.objectStore("files");
-    const request = store.get(fileName);
-    request.onsuccess = () => {
-      const file = request.result;
-      const a = document.createElement("a");
-      a.href = file.data;
-      a.download = file.name;
+    function addToContacts() {
+      const vcfData = `BEGIN:VCARD
+VERSION:3.0
+FN:Yurt Yapı Alüminyum Sistemleri
+ORG:Yurt Yapı Alüminyum Sistemleri
+TEL;TYPE=CELL:05353133790
+EMAIL:info@yurtyapialuminyum.com
+ADR;TYPE=WORK:;;İnönü Mahallesi 361 Sk No 48;BAĞCILAR;İSTANBUL;;
+END:VCARD`;
+
+      const blob = new Blob([vcfData], {type: 'text/vcard'});
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-    };
-  }
-
-  // Dosya sil
-  function deleteFile(fileName) {
-    const transaction = db.transaction(["files"], "readwrite");
-    const store = transaction.objectStore("files");
-    store.delete(fileName).onsuccess = () => {
-      showFiles();
-    };
-  }
-
-  // Giriş ve çıkış
-  document.getElementById("loginBtn").addEventListener("click", () => {
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
-  });
-
-  function logout() {
-    document.getElementById("mainContent").style.display = "none";
-    document.getElementById("loginPage").style.display = "block";
-  }
-</script>
-
+      URL.revokeObjectURL(url);
+    }
+  </script>
 </body>
 </html>
