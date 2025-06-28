@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Yurt Yapı Giriş</title>
   <style>
+    /* [STYLES – aynı şekilde bırakıldı] */
     * {
       box-sizing: border-box;
     }
-
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
@@ -17,7 +17,6 @@
       color: #2c3e50;
       height: 100vh;
     }
-
     .container {
       max-width: 600px;
       margin: 40px auto;
@@ -27,7 +26,6 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
       position: relative;
     }
-
     .login-container {
       display: flex;
       justify-content: center;
@@ -37,7 +35,6 @@
       text-align: center;
       gap: 20px;
     }
-
     .login-title-box {
       background-color: white;
       padding: 15px 25px;
@@ -49,11 +46,9 @@
       font-weight: bold;
       color: #2c3e50;
     }
-
     .login-box {
       user-select: none;
     }
-
     .login-btn {
       background-color: #2980b9;
       color: white;
@@ -67,12 +62,10 @@
       transition: background-color 0.3s ease;
       position: relative;
     }
-
     .login-btn:hover {
       background-color: #2471a3;
       text-decoration: none;
     }
-
     .main-title-box {
       background-color: white;
       padding: 15px 30px;
@@ -87,7 +80,6 @@
       vertical-align: middle;
       user-select: none;
     }
-
     .logout-btn {
       position: fixed;
       top: 15px;
@@ -107,7 +99,6 @@
     .logout-btn:hover {
       color: #e74c3c;
     }
-
     .header-container {
       display: flex;
       align-items: center;
@@ -116,23 +107,19 @@
       margin-bottom: 30px;
       position: relative;
     }
-
     .section {
       padding: 20px;
       border-radius: 8px;
       margin-bottom: 20px;
     }
-
     .contact-info {
       background-color: #eaf2f8;
       border-left: 5px solid #2980b9;
     }
-
     .files-section {
       background-color: #eafaf1;
       border-left: 5px solid #27ae60;
     }
-
     .section-title {
       margin-bottom: 15px;
       font-size: 1.3em;
@@ -140,15 +127,12 @@
       text-align: center;
       color: #2c3e50;
     }
-
     .contact-details {
       font-size: 0.95em;
     }
-
     .contact-details div {
       margin: 6px 0;
     }
-
     .file-upload {
       padding: 15px;
       border: 2px dashed #bdc3c7;
@@ -156,7 +140,6 @@
       text-align: center;
       background-color: #ffffff;
     }
-
     .action-btn {
       margin-top: 10px;
       padding: 10px;
@@ -170,7 +153,6 @@
       font-weight: bold;
       position: relative;
     }
-
     .add-contact-btn {
       margin-top: 15px;
       width: 100%;
@@ -185,13 +167,11 @@
       user-select: none;
       position: relative;
     }
-
     footer {
       border-top: 1px solid #ccc;
       margin-top: 40px;
       padding: 20px 0;
     }
-
     .loading-text {
       position: absolute;
       top: 0;
@@ -208,12 +188,10 @@
       transition: opacity 0.3s ease;
       font-size: 0.7em;
     }
-
     .action-btn .loading-text,
     .add-contact-btn .loading-text {
       font-size: 1em;
     }
-
     .loading .loading-text {
       opacity: 1;
     }
@@ -221,7 +199,6 @@
 </head>
 <body>
 
-  <!-- Giriş Sayfası -->
   <div id="loginPage" class="login-container">
     <div class="login-title-box">Yurt Yapı</div>
     <div class="login-box">
@@ -232,7 +209,6 @@
     </div>
   </div>
 
-  <!-- Ana İçerik -->
   <div id="mainContent" class="container" style="display:none;">
     <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:inline-block;">X</button>
     <div class="header-container">
@@ -243,7 +219,8 @@
       <h2 class="section-title">İLETİŞİM BİLGİLERİ</h2>
       <div class="contact-details">
         <div><strong>Kurucu:</strong> İsmail Yeşilyurt</div>
-        <div><strong>Tel:</strong> 0535 313 37 90</div>
+        <div><strong>Tel:</strong> +90 535 313 37 90</div>
+        <div><strong>Tel:</strong> 0212 436 43 53</div>
         <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
         <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
       </div>
@@ -270,7 +247,6 @@
     document.getElementById('loginBtn').addEventListener('click', function () {
       const btn = this;
       btn.classList.add('loading');
-      
       setTimeout(() => {
         document.getElementById('loginPage').style.display = 'none';
         document.getElementById('mainContent').style.display = 'block';
@@ -288,13 +264,13 @@
     function addToContacts() {
       const btn = event.target.closest('button');
       btn.classList.add('loading');
-      
       setTimeout(() => {
         const vcfData = `BEGIN:VCARD
 VERSION:3.0
 FN:Yurt Yapı Alüminyum Sistemleri
 ORG:Yurt Yapı Alüminyum Sistemleri
-TEL;TYPE=CELL:05353133790
+TEL;TYPE=CELL:+905353133790
+TEL;TYPE=WORK:02124364353
 EMAIL:info@yurtyapialuminyum.com
 ADR;TYPE=WORK:;;İnönü Mahallesi 361 Sk No 48;BAĞCILAR;İSTANBUL;;
 END:VCARD`;
@@ -309,7 +285,6 @@ END:VCARD`;
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        
         btn.classList.remove('loading');
       }, 1000);
     }
@@ -317,7 +292,6 @@ END:VCARD`;
     function openFileUpload() {
       const btn = event.target.closest('button');
       btn.classList.add('loading');
-      
       setTimeout(() => {
         window.open('https://filebin.net/ofpswuxh42f8em1w', '_blank');
         btn.classList.remove('loading');
