@@ -221,7 +221,7 @@
         <div><strong>Tel:</strong> +90 535 313 37 90</div>
         <div><strong>Tel (İş):</strong> 0212 436 43 53</div>
         <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
-        <div><strong>Adres:</strong> İnönü Mahallesi 361 Sk No 48, BAĞCILAR / İSTANBUL</div>
+        <div><strong>Adres:</strong> İnönü, 30/4-B Sk. No:48, 34203 Bağcılar/İstanbul</div>
       </div>
       <button class="add-contact-btn" onclick="addToContacts()">
         REHBERE EKLE
@@ -249,53 +249,4 @@
       setTimeout(() => {
         document.getElementById('loginPage').style.display = 'none';
         document.getElementById('mainContent').style.display = 'block';
-        document.getElementById('logoutBtn').style.display = 'inline-block';
-        btn.classList.remove('loading');
-      }, 1000);
-    });
-
-    function logout() {
-      document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('loginPage').style.display = 'flex';
-      document.getElementById('logoutBtn').style.display = 'none';
-    }
-
-    function addToContacts() {
-      const btn = event.target.closest('button');
-      btn.classList.add('loading');
-      setTimeout(() => {
-        const vcfData = `BEGIN:VCARD
-VERSION:3.0
-FN:Yurt Yapı Alüminyum Sistemleri
-ORG:Yurt Yapı Alüminyum Sistemleri
-TEL;TYPE=CELL:+905353133790
-TEL;TYPE=WORK,VOICE:02124364353
-EMAIL:info@yurtyapialuminyum.com
-ADR;TYPE=WORK:;;İnönü Mahallesi 361 Sk No 48;BAĞCILAR;İSTANBUL;;
-END:VCARD`;
-
-        const blob = new Blob([vcfData], {type: 'text/vcard'});
-        const url = URL.createObjectURL(blob);
-
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        btn.classList.remove('loading');
-      }, 1000);
-    }
-
-    function openFileUpload() {
-      const btn = event.target.closest('button');
-      btn.classList.add('loading');
-      setTimeout(() => {
-        window.open('https://filebin.net/ofpswuxh42f8em1w', '_blank');
-        btn.classList.remove('loading');
-      }, 1000);
-    }
-  </script>
-</body>
-</html>
+        document.get
