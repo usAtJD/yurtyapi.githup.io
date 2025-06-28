@@ -63,6 +63,7 @@
     }
     .login-btn:hover {
       background-color: #2471a3;
+      text-decoration: none;
     }
     .main-title-box {
       background-color: white;
@@ -263,18 +264,11 @@
       const btn = event.target.closest('button');
       btn.classList.add('loading');
       setTimeout(() => {
-        const vcfData = 
-`BEGIN:VCARD
-VERSION:3.0
-FN:İsmail Yeşilyurt
-TEL;TYPE=CELL:+905353133790
-EMAIL:info@yurtyapialuminyum.com
-ADR;TYPE=HOME:;;İnönü, 30/4-B Sk. No:48;Bağcılar;İstanbul;34203;Türkiye
-END:VCARD
-BEGIN:VCARD
+        const vcfData = `BEGIN:VCARD
 VERSION:3.0
 FN:Yurt Yapı Alüminyum Sistemleri
 ORG:Yurt Yapı Alüminyum Sistemleri
+TEL;TYPE=CELL:+905353133790
 TEL;TYPE=WORK,VOICE:02124364353
 EMAIL:info@yurtyapialuminyum.com
 ADR;TYPE=WORK:;;İnönü, 30/4-B Sk. No:48;Bağcılar;İstanbul;34203;Türkiye
@@ -282,9 +276,10 @@ END:VCARD`;
 
         const blob = new Blob([vcfData], {type: 'text/vcard'});
         const url = URL.createObjectURL(blob);
+
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'rehber_kayitlari.vcf';
+        a.download = 'yurt_yapi_aluminyum_sistemleri.vcf';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
