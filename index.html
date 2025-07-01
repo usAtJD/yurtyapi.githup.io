@@ -7,24 +7,112 @@
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
       background-color: #f4f6f7;
       color: #2c3e50;
       height: 100vh;
     }
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      position: relative;
+
+    /* Dil Seçici Stilleri */
+    .language-selector {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
     }
+    .language-current {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 8px;
+      background-color: rgba(255,255,255,0.9);
+      border-radius: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(0,0,0,0.05);
+      height: 40px;
+    }
+    .language-current:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    .language-current-flag {
+      width: 24px;
+      height: 16px;
+      object-fit: cover;
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .language-current-name {
+      font-size: 0.85em;
+      font-weight: 500;
+      margin: 0 8px;
+      max-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      transition: max-width 0.3s ease, margin 0.3s ease;
+    }
+    .language-selector.show-name .language-current-name {
+      max-width: 100px;
+      margin: 0 8px;
+    }
+    .language-chevron {
+      font-size: 10px;
+      color: #7f8c8d;
+      transition: transform 0.3s ease;
+      margin-right: 5px;
+    }
+    .language-selector.active .language-chevron {
+      transform: rotate(180deg);
+    }
+    .language-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      padding: 8px 0;
+      display: none;
+      min-width: 140px;
+      z-index: 1001;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .language-selector.active .language-dropdown {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .language-option {
+      display: flex;
+      align-items: center;
+      padding: 8px 15px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .language-option:hover {
+      background-color: #f8f9fa;
+    }
+    .language-flag {
+      width: 20px;
+      height: 15px;
+      object-fit: cover;
+      border-radius: 2px;
+      margin-right: 10px;
+    }
+    .language-name {
+      font-size: 0.85em;
+    }
+
+    /* Login Sayfası Stilleri */
     .login-container {
       display: flex;
       justify-content: center;
@@ -40,13 +128,8 @@
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
       min-width: 250px;
-      user-select: none;
       font-size: 2em;
       font-weight: bold;
-      color: #2c3e50;
-    }
-    .login-box {
-      user-select: none;
     }
     .login-btn {
       background-color: #2980b9;
@@ -57,27 +140,55 @@
       cursor: pointer;
       font-size: 1.3em;
       font-weight: bold;
-      user-select: none;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
       position: relative;
+      overflow: hidden;
     }
     .login-btn:hover {
       background-color: #2471a3;
-      text-decoration: none;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
-    .main-title-box {
+
+    /* Spinner Stilleri */
+    .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .loading .spinner {
+      opacity: 1;
+    }
+    .loading .btn-text {
+      opacity: 0;
+    }
+    .btn-text {
+      transition: opacity 0.3s ease;
+    }
+
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Ana İçerik Stilleri */
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
       background-color: white;
-      padding: 15px 30px;
-      margin-bottom: 30px;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      font-size: 1.6em;
-      font-weight: bold;
-      text-align: center;
-      color: #2c3e50;
-      display: inline-block;
-      vertical-align: middle;
-      user-select: none;
+      position: relative;
+      display: none;
     }
     .logout-btn {
       position: fixed;
@@ -89,22 +200,36 @@
       color: #2c3e50;
       border: none;
       cursor: pointer;
-      user-select: none;
       font-weight: bold;
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
       z-index: 1000;
       line-height: 1;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .logout-btn:hover {
       color: #e74c3c;
+      background-color: rgba(0,0,0,0.05);
+      transform: rotate(90deg);
     }
     .header-container {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
       margin-bottom: 30px;
-      position: relative;
+    }
+    .main-title-box {
+      background-color: white;
+      padding: 15px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      font-size: 1.6em;
+      font-weight: bold;
+      text-align: center;
     }
     .section {
       padding: 20px;
@@ -124,13 +249,6 @@
       font-size: 1.3em;
       font-weight: bold;
       text-align: center;
-      color: #2c3e50;
-    }
-    .contact-details {
-      font-size: 0.95em;
-    }
-    .contact-details div {
-      margin: 6px 0;
     }
     .file-upload {
       padding: 15px;
@@ -150,66 +268,60 @@
       cursor: pointer;
       width: 100%;
       font-weight: bold;
+      transition: all 0.3s ease;
       position: relative;
+      overflow: hidden;
     }
-    .add-contact-btn {
-      margin-top: 15px;
-      width: 100%;
-      padding: 10px;
-      background-color: #3498db;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 0.95em;
-      font-weight: bold;
-      cursor: pointer;
-      user-select: none;
-      position: relative;
-    }
-    footer {
-      border-top: 1px solid #ccc;
-      margin-top: 40px;
-      padding: 20px 0;
-    }
-    .loading-text {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: inherit;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: inherit;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      font-size: 0.7em;
-    }
-    .action-btn .loading-text,
-    .add-contact-btn .loading-text {
-      font-size: 1em;
-    }
-    .loading .loading-text {
-      opacity: 1;
+    .action-btn:hover {
+      background-color: #2471a3;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
 
+  <!-- Dil Seçici -->
+  <div class="language-selector" id="languageSelector">
+    <div class="language-current" onclick="toggleLanguageSelector()">
+      <img src="https://flagcdn.com/w20/tr.png" alt="Türkçe" class="language-current-flag" id="currentFlag">
+      <span class="language-current-name" id="currentLanguageName">Türkçe</span>
+      <span class="language-chevron">▼</span>
+    </div>
+    <div class="language-dropdown">
+      <div class="language-option" onclick="changeLanguage('tr', 'Türkçe', 'https://flagcdn.com/w20/tr.png')">
+        <img src="https://flagcdn.com/w20/tr.png" alt="Türkçe" class="language-flag">
+        <span class="language-name">Türkçe</span>
+      </div>
+      <div class="language-option" onclick="changeLanguage('en', 'English', 'https://flagcdn.com/w20/gb.png')">
+        <img src="https://flagcdn.com/w20/gb.png" alt="English" class="language-flag">
+        <span class="language-name">English</span>
+      </div>
+      <div class="language-option" onclick="changeLanguage('de', 'Deutsch', 'https://flagcdn.com/w20/de.png')">
+        <img src="https://flagcdn.com/w20/de.png" alt="Deutsch" class="language-flag">
+        <span class="language-name">Deutsch</span>
+      </div>
+      <div class="language-option" onclick="changeLanguage('ar', 'العربية', 'https://flagcdn.com/w20/ae.png')">
+        <img src="https://flagcdn.com/w20/ae.png" alt="العربية" class="language-flag">
+        <span class="language-name">العربية</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Giriş Sayfası -->
   <div id="loginPage" class="login-container">
     <div class="login-title-box">Yurt Yapı</div>
     <div class="login-box">
       <button id="loginBtn" class="login-btn">
-        GİRİŞ
-        <span class="loading-text">Loading...</span>
+        <span class="btn-text">GİRİŞ</span>
+        <span class="spinner"></span>
       </button>
     </div>
   </div>
 
-  <div id="mainContent" class="container" style="display:none;">
-    <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:inline-block;">X</button>
+  <!-- Ana İçerik (Başlangıçta gizli) -->
+  <div id="mainContent" class="container">
+    <button class="logout-btn" onclick="logout()" id="logoutBtn">✕</button>
     <div class="header-container">
       <div class="main-title-box">Yurt Yapı Alüminyum Sistemleri</div>
     </div>
@@ -223,9 +335,9 @@
         <div><strong>Email:</strong> info@yurtyapialuminyum.com</div>
         <div><strong>Adres:</strong> İnönü, 30/4-B Sk. No:48, 34203 Bağcılar/İstanbul</div>
       </div>
-      <button class="add-contact-btn" onclick="addToContacts()">
-        REHBERE EKLE
-        <span class="loading-text">Loading...</span>
+      <button class="action-btn" onclick="addToContacts()">
+        <span class="btn-text">REHBERE EKLE</span>
+        <span class="spinner"></span>
       </button>
     </div>
 
@@ -233,19 +345,76 @@
       <h2 class="section-title">Dosya Yönetimi</h2>
       <div class="file-upload">
         <button class="action-btn" onclick="openFileUpload()">
-          DOSYA YÜKLE
-          <span class="loading-text">Loading...</span>
+          <span class="btn-text">DOSYA YÜKLE</span>
+          <span class="spinner"></span>
         </button>
       </div>
     </div>
   </div>
 
-  <footer></footer>
-
   <script>
-    document.getElementById('loginBtn').addEventListener('click', function () {
+    // Dil seçiciyi açıp kapama
+    function toggleLanguageSelector() {
+      const selector = document.getElementById('languageSelector');
+      selector.classList.toggle('active');
+      
+      // Dil ismini geçici olarak göster
+      if (selector.classList.contains('active')) {
+        showLanguageNameTemporarily();
+      }
+    }
+
+    // Dil ismini geçici olarak göster
+    function showLanguageNameTemporarily() {
+      const selector = document.getElementById('languageSelector');
+      const nameElement = document.getElementById('currentLanguageName');
+      
+      selector.classList.add('show-name');
+      
+      // 3 saniye sonra tekrar gizle
+      setTimeout(() => {
+        if (!selector.classList.contains('active')) {
+          selector.classList.remove('show-name');
+        }
+      }, 3000);
+    }
+
+    // Dil değiştirme fonksiyonu
+    function changeLanguage(lang, langName, flagUrl) {
+      // Bayrağı ve ismi güncelle
+      document.getElementById('currentFlag').src = flagUrl;
+      document.getElementById('currentLanguageName').textContent = langName;
+      
+      // Dil seçiciyi kapat
+      document.getElementById('languageSelector').classList.remove('active');
+      
+      // Dil ismini geçici olarak göster
+      showLanguageNameTemporarily();
+      
+      // Burada dil değişikliği işlemlerini yapabilirsiniz
+      console.log('Selected language:', langName);
+    }
+
+    // Dışarı tıklandığında dil seçiciyi kapat
+    document.addEventListener('click', function(event) {
+      const selector = document.getElementById('languageSelector');
+      if (!selector.contains(event.target)) {
+        selector.classList.remove('active');
+        
+        // Eğer aktif değilse ismi gizle
+        if (!selector.classList.contains('active')) {
+          setTimeout(() => {
+            selector.classList.remove('show-name');
+          }, 300);
+        }
+      }
+    });
+
+    // Giriş butonu işlevi
+    document.getElementById('loginBtn').addEventListener('click', function() {
       const btn = this;
       btn.classList.add('loading');
+      
       setTimeout(() => {
         document.getElementById('loginPage').style.display = 'none';
         document.getElementById('mainContent').style.display = 'block';
@@ -254,15 +423,18 @@
       }, 1000);
     });
 
+    // Çıkış butonu işlevi
     function logout() {
       document.getElementById('mainContent').style.display = 'none';
       document.getElementById('loginPage').style.display = 'flex';
       document.getElementById('logoutBtn').style.display = 'none';
     }
 
+    // Rehbere ekle butonu işlevi
     function addToContacts() {
       const btn = event.target.closest('button');
       btn.classList.add('loading');
+      
       setTimeout(() => {
         const vcfData = `BEGIN:VCARD
 VERSION:3.0
@@ -288,9 +460,11 @@ END:VCARD`;
       }, 1000);
     }
 
+    // Dosya yükleme butonu işlevi
     function openFileUpload() {
       const btn = event.target.closest('button');
       btn.classList.add('loading');
+      
       setTimeout(() => {
         window.open('https://filebin.net/9nbyakewe1crmwvl', '_blank');
         btn.classList.remove('loading');
