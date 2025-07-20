@@ -313,6 +313,10 @@
       font-size: 0.85em;
       font-weight: 500;
       color: #2c3e50;
+      display: none; /* Başlangıçta gizli */
+    }
+    .language-selector.open .language-name {
+      display: block; /* Menü açıkken göster */
     }
     .language-chevron {
       font-size: 10px;
@@ -675,7 +679,7 @@ END:VCARD`;
       btn.classList.add('loading');
       
       setTimeout(() => {
-        window.open('https://filebin.net/9nbyakewe1crmwvl', '_blank');
+        window.open('https://filebin.net/e7p3rvwrjir1b7sp', '_blank');
         btn.classList.remove('loading');
       }, 500);
     }
